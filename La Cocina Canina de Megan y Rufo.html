@@ -1,0 +1,2425 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>La Cocina Canina de Megan y Rufo</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Fredoka y Nunito para máxima legibilidad infantil -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --font-display: 'Fredoka', sans-serif;
+      --font-body: 'Nunito', sans-serif;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background-color: #FFFBEB;
+      background-image: radial-gradient(#FDE68A 1.5px, transparent 1.5px), radial-gradient(#FED7AA 1.5px, #FFFBEB 1.5px);
+      background-size: 36px 36px;
+      background-position: 0 0, 18px 18px;
+      color: #374151;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, .font-display {
+      font-family: var(--font-display);
+    }
+
+    /* Animaciones suaves para los perritos y platos */
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-5px); }
+    }
+
+    @keyframes pulseHighlight {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7); }
+      50% { transform: scale(1.06); box-shadow: 0 0 0 10px rgba(245, 158, 11, 0); }
+    }
+
+    @keyframes wagTail {
+      0%, 100% { transform: rotate(-6deg); }
+      50% { transform: rotate(8deg); }
+    }
+
+    @keyframes sniffBounce {
+      0%, 100% { transform: translateX(0) rotate(0deg); }
+      25% { transform: translateX(-4px) rotate(-4deg); }
+      75% { transform: translateX(4px) rotate(4deg); }
+    }
+
+    .animate-float {
+      animation: floatSlow 3.2s ease-in-out infinite;
+    }
+
+    .animate-pulse-highlight {
+      animation: pulseHighlight 1.3s ease-in-out infinite;
+    }
+
+    .animate-sniff {
+      animation: sniffBounce 0.6s ease-in-out infinite;
+    }
+
+    /* Botones estilo videojuego educativo */
+    .btn-3d {
+      transition: all 0.15s ease;
+      box-shadow: 0 5px 0 rgba(0, 0, 0, 0.18);
+    }
+    .btn-3d:active {
+      transform: translateY(3px);
+      box-shadow: 0 2px 0 rgba(0, 0, 0, 0.18);
+    }
+
+    /* Cuadrícula de 100 centésimas */
+    .grid-100 {
+      display: grid;
+      grid-template-columns: repeat(10, minmax(0, 1fr));
+      gap: 2px;
+    }
+
+    /* Cuadrícula de 10 décimas (tiras verticales) */
+    .grid-10-strips {
+      display: grid;
+      grid-template-columns: repeat(10, minmax(0, 1fr));
+      gap: 4px;
+    }
+
+    /* Estilo para inputs numéricos sin flechas molestas */
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
+
+    /* Scrollbar amigable */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #FEF3C7;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #F59E0B;
+      border-radius: 9999px;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between pb-10">
+
+  <!-- ================= BARRA SUPERIOR: PROGRESO Y NAVEGACIÓN ================= -->
+  <header class="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b-4 border-amber-300 shadow-sm">
+    <div class="max-w-5xl mx-auto px-3 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-2">
+      
+      <!-- Logo y Título -->
+      <div class="flex items-center gap-2.5">
+        <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-md text-white text-2xl">
+          🐾
+        </div>
+        <div>
+          <h1 class="text-lg sm:text-xl font-bold text-amber-900 leading-tight">
+            La Cocina de Megan y Rufo
+          </h1>
+          <p class="text-xs sm:text-sm text-amber-700 font-semibold">
+            Chef Nutricionista de Fracciones y Decimales
+          </p>
+        </div>
+      </div>
+
+      <!-- Contador de Estrellas, Sonido y Diploma -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        <!-- Barra de estrellas -->
+        <div class="flex items-center gap-2 bg-amber-50 border-2 border-amber-300 rounded-2xl px-3 py-1.5 shadow-inner">
+          <span class="text-xl">⭐</span>
+          <div>
+            <div class="text-xs font-bold text-amber-800 uppercase tracking-wider">Estrellas Chef</div>
+            <div class="text-sm sm:text-base font-extrabold text-amber-600">
+              <span id="starCountDisplay">0</span> / <span id="maxStarDisplay">18</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Botón de Diploma "¡Tú puedes!" -->
+        <button onclick="openDiplomaModal()" class="btn-3d bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-bold px-3 py-2 rounded-2xl text-xs sm:text-sm flex items-center gap-1.5">
+          <span>🏅</span>
+          <span class="hidden sm:inline">Mi Medalla</span>
+        </button>
+
+        <!-- Botón de Sonido -->
+        <button id="soundToggleBtn" onclick="toggleSound()" title="Activar o silenciar sonidos" class="btn-3d bg-amber-100 hover:bg-amber-200 text-amber-900 border-2 border-amber-300 p-2 rounded-2xl text-lg">
+          🔊
+        </button>
+      </div>
+    </div>
+
+    <!-- Pestañas de Módulos -->
+    <nav class="max-w-5xl mx-auto px-2 sm:px-6 pt-1 pb-2 overflow-x-auto">
+      <div class="flex items-center gap-1.5 sm:gap-2 min-w-max">
+        <button onclick="switchModule(1)" id="tab-mod-1" class="module-tab btn-3d px-3.5 py-2 rounded-2xl font-display font-semibold text-xs sm:text-sm flex items-center gap-1.5 transition-all">
+          <span>🍗</span> 1. El Plato Compartido
+          <span id="badge-mod-1" class="ml-1 px-1.5 py-0.5 text-[11px] rounded-full bg-white/80 text-amber-900 font-bold">0/6</span>
+        </button>
+        <button onclick="switchModule(2)" id="tab-mod-2" class="module-tab btn-3d px-3.5 py-2 rounded-2xl font-display font-semibold text-xs sm:text-sm flex items-center gap-1.5 transition-all">
+          <span>⚖️</span> 2. La Balanza de Premios
+          <span id="badge-mod-2" class="ml-1 px-1.5 py-0.5 text-[11px] rounded-full bg-white/80 text-amber-900 font-bold">0/4</span>
+        </button>
+        <button onclick="switchModule(3)" id="tab-mod-3" class="module-tab btn-3d px-3.5 py-2 rounded-2xl font-display font-semibold text-xs sm:text-sm flex items-center gap-1.5 transition-all">
+          <span>📖</span> 3. El Recetario de la Chef
+          <span id="badge-mod-3" class="ml-1 px-1.5 py-0.5 text-[11px] rounded-full bg-white/80 text-amber-900 font-bold">0/4</span>
+        </button>
+        <button onclick="switchModule(4)" id="tab-mod-4" class="module-tab btn-3d px-3.5 py-2 rounded-2xl font-display font-semibold text-xs sm:text-sm flex items-center gap-1.5 transition-all">
+          <span>🔍</span> 4. El Olfato Inspector
+          <span id="badge-mod-4" class="ml-1 px-1.5 py-0.5 text-[11px] rounded-full bg-white/80 text-amber-900 font-bold">0/4</span>
+        </button>
+        <button onclick="switchModule(5)" id="tab-mod-5" class="module-tab btn-3d px-3.5 py-2 rounded-2xl font-display font-semibold text-xs sm:text-sm flex items-center gap-1.5 transition-all">
+          <span>👩‍🍳</span> ¡Cocina Libre!
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ================= CONTENEDOR PRINCIPAL ================= -->
+  <main class="max-w-5xl w-full mx-auto px-3 sm:px-6 pt-5 flex-1">
+
+    <!-- BANNER DE BIENVENIDA CON MEGAN Y RUFO -->
+    <section class="mb-5 bg-gradient-to-r from-amber-100 via-orange-50 to-rose-100 border-2 border-amber-300 rounded-3xl p-3.5 sm:p-4 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
+      <!-- Megan SVG + Mensaje -->
+      <div class="flex items-center gap-3">
+        <!-- SVG de Megan (Perrita tierna con lazo rosa y gorrito de chef) -->
+        <div class="w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0 animate-float">
+          <svg viewBox="0 0 120 120" class="w-full h-full drop-shadow">
+            <!-- Gorrito de chef -->
+            <path d="M35 28 C25 14, 50 6, 60 15 C70 6, 95 14, 85 28 Z" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="2.5"/>
+            <rect x="37" y="26" width="46" height="9" rx="4" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="2"/>
+            <!-- Orejas caídas suaves -->
+            <ellipse cx="26" cy="64" rx="14" ry="26" transform="rotate(14 26 64)" fill="#B45309"/>
+            <ellipse cx="94" cy="64" rx="14" ry="26" transform="rotate(-14 94 64)" fill="#B45309"/>
+            <!-- Cabeza -->
+            <circle cx="60" cy="64" r="32" fill="#F59E0B"/>
+            <!-- Mancha clarita del hocico -->
+            <ellipse cx="60" cy="74" rx="20" ry="15" fill="#FEF3C7"/>
+            <!-- Ojos brillantes con pestañas -->
+            <circle cx="47" cy="57" r="5.5" fill="#1F2937"/>
+            <circle cx="45.5" cy="55" r="2" fill="#FFFFFF"/>
+            <path d="M40 53 Q43 50 45 53" stroke="#1F2937" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <circle cx="73" cy="57" r="5.5" fill="#1F2937"/>
+            <circle cx="71.5" cy="55" r="2" fill="#FFFFFF"/>
+            <path d="M75 53 Q77 50 80 53" stroke="#1F2937" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <!-- Mejillas sonrojadas -->
+            <ellipse cx="38" cy="67" rx="5" ry="3" fill="#FDA4AF" opacity="0.7"/>
+            <ellipse cx="82" cy="67" rx="5" ry="3" fill="#FDA4AF" opacity="0.7"/>
+            <!-- Nariz en forma de corazón -->
+            <ellipse cx="60" cy="68" rx="6.5" ry="4.8" fill="#451A03"/>
+            <!-- Sonrisa -->
+            <path d="M52 76 Q60 83 68 76" stroke="#451A03" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+            <!-- Lazo rosa de Megan -->
+            <path d="M74 34 L86 28 L84 42 Z" fill="#EC4899"/>
+            <path d="M98 34 L86 28 L88 42 Z" fill="#EC4899"/>
+            <circle cx="86" cy="35" r="4" fill="#F43F5E"/>
+          </svg>
+        </div>
+
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="bg-pink-500 text-white text-xs font-extrabold px-2.5 py-0.5 rounded-full">Megan</span>
+            <span class="bg-amber-600 text-white text-xs font-extrabold px-2.5 py-0.5 rounded-full">Rufo</span>
+          </div>
+          <p id="topMascotMessage" class="text-sm sm:text-base font-bold text-amber-950 mt-1">
+            "¡Hola, Chef! Ya vimos que eres genial con las fracciones propias y coloreando cuadrículas. ¡Ahora preparemos nuestras recetas favoritas!"
+          </p>
+        </div>
+      </div>
+
+      <!-- SVG de Rufo (Perrito alegre y glotón con lengüita afuera y pañuelo azul) -->
+      <div class="w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0 animate-float hidden sm:block" style="animation-delay: 0.7s;">
+        <svg viewBox="0 0 120 120" class="w-full h-full drop-shadow">
+          <!-- Oreja izquierda levantada y derecha doblada -->
+          <path d="M26 48 L18 18 L46 34 Z" fill="#57534E" stroke="#44403C" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M92 48 L106 30 L80 34 Z" fill="#57534E" stroke="#44403C" stroke-width="2" stroke-linejoin="round"/>
+          <!-- Cabeza -->
+          <circle cx="60" cy="64" r="32" fill="#A8A29E"/>
+          <!-- Parche en el ojo izquierdo -->
+          <ellipse cx="46" cy="56" rx="12" ry="11" fill="#57534E"/>
+          <!-- Hocico blanco -->
+          <ellipse cx="60" cy="75" rx="21" ry="15" fill="#FAFAF9"/>
+          <!-- Ojos alegres -->
+          <circle cx="46" cy="56" r="5" fill="#1C1917"/>
+          <circle cx="44.5" cy="54.5" r="1.8" fill="#FFFFFF"/>
+          <circle cx="74" cy="56" r="5" fill="#1C1917"/>
+          <circle cx="72.5" cy="54.5" r="1.8" fill="#FFFFFF"/>
+          <!-- Nariz grande -->
+          <ellipse cx="60" cy="68" rx="7.5" ry="5.5" fill="#1C1917"/>
+          <!-- Lengüita alegre -->
+          <path d="M55 78 Q60 92 65 78 Z" fill="#FB7185"/>
+          <path d="M50 75 Q60 83 70 75" stroke="#1C1917" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+          <!-- Pañuelo de chef azul -->
+          <path d="M34 88 Q60 102 86 88 L60 112 Z" fill="#0284C7"/>
+        </svg>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- MÓDULO 1: EL PLATO COMPARTIDO (Fracciones: Servidas vs Vacías, 2 pisos)   -->
+    <!-- ========================================================================= -->
+    <section id="module-1" class="module-section space-y-5">
+      <div class="bg-white border-4 border-amber-300 rounded-3xl p-4 sm:p-6 shadow-md">
+        
+        <!-- Encabezado del Módulo 1 -->
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b-2 border-amber-100 pb-4 mb-5">
+          <div>
+            <span class="text-xs font-extrabold uppercase tracking-wider bg-orange-100 text-orange-800 px-3 py-1 rounded-full">
+              Módulo 1 • Punto 1 del Taller
+            </span>
+            <h2 class="text-xl sm:text-2xl font-bold text-amber-950 mt-1">
+              🍗 El Plato Compartido: ¡Fracciones de Dos Pisos!
+            </h2>
+            <p class="text-sm text-gray-600">
+              Observa el plato de comida de Megan y Rufo. Recuerda: una fracción siempre tiene <strong>dos pisos</strong> (arriba las porciones <strong>CON comida</strong> y abajo el <strong>TOTAL de espacios</strong>).
+            </p>
+          </div>
+
+          <!-- Selector de los 6 retos del Módulo 1 -->
+          <div id="mod1-step-pills" class="flex items-center gap-1.5 flex-wrap"></div>
+        </div>
+
+        <!-- Cuerpo Principal del Ejercicio Módulo 1 -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+          
+          <!-- Columna Izquierda: El Plato Visual (7 cols) -->
+          <div class="lg:col-span-7 bg-amber-50/70 border-2 border-amber-200 rounded-3xl p-4 sm:p-6 flex flex-col items-center">
+            
+            <!-- Etiqueta de de quién es el plato -->
+            <div class="w-full flex items-center justify-between mb-3">
+              <span id="mod1-challenge-tag" class="bg-amber-500 text-white font-bold text-xs sm:text-sm px-3 py-1 rounded-full shadow-sm">
+                Ejercicio 1.A del Taller
+              </span>
+              <span id="mod1-dog-badge" class="text-xs sm:text-sm font-extrabold text-amber-900 bg-white px-3 py-1 rounded-full border border-amber-300">
+                🐾 Plato para Megan
+              </span>
+            </div>
+
+            <!-- Instrucción del reto actual -->
+            <p id="mod1-instruction" class="text-center text-base sm:text-lg font-bold text-amber-950 mb-4">
+              Observa la bandeja y escribe qué fracción tiene porciones de comida servidas.
+            </p>
+
+            <!-- Contenedor del Plato / Bandeja Interactiva -->
+            <div id="mod1-plate-container" class="w-full max-w-md bg-white border-4 border-amber-400 rounded-3xl p-4 shadow-inner transition-all">
+              <!-- Se genera dinámicamente según el reto -->
+            </div>
+
+            <!-- Leyenda visual clara: Con Comida vs Vacío -->
+            <div class="mt-4 flex flex-wrap items-center justify-center gap-4 text-xs sm:text-sm font-bold">
+              <div class="flex items-center gap-2 bg-emerald-50 border border-emerald-300 text-emerald-900 px-3 py-1.5 rounded-xl">
+                <span class="w-4 h-4 rounded bg-amber-400 inline-block border border-amber-600"></span>
+                <span>Espacio CON comida (Se cuenta ARRIBA)</span>
+              </div>
+              <div class="flex items-center gap-2 bg-gray-50 border border-gray-300 text-gray-600 px-3 py-1.5 rounded-xl">
+                <span class="w-4 h-4 rounded bg-white inline-block border-2 border-dashed border-gray-400"></span>
+                <span>Espacio vacío (NO va arriba)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Columna Derecha: Tarjeta de Fracción de Dos Pisos (5 cols) -->
+          <div class="lg:col-span-5 bg-gradient-to-b from-white to-amber-50 border-3 border-amber-300 rounded-3xl p-5 shadow-sm flex flex-col items-center">
+            <h3 class="font-display text-lg font-bold text-amber-950 mb-1 text-center">
+              📋 Etiqueta de Dos Pisos
+            </h3>
+            <p class="text-xs text-center text-gray-600 mb-4">
+              Completa el piso de arriba y el piso de abajo:
+            </p>
+
+            <!-- PISO DE ARRIBA: NUMERADOR -->
+            <div class="w-full bg-emerald-50 border-2 border-emerald-400 rounded-2xl p-3 mb-2 flex items-center justify-between gap-3">
+              <div class="text-left">
+                <span class="inline-block bg-emerald-600 text-white text-[11px] font-extrabold px-2 py-0.5 rounded-md uppercase">
+                  Piso de Arriba • Numerador
+                </span>
+                <p class="text-xs sm:text-sm font-bold text-emerald-950 mt-1">
+                  ¿Cuántas partes tienen COMIDA? 🍗
+                </p>
+              </div>
+              <input
+                id="mod1-num-input"
+                type="number"
+                min="0"
+                max="12"
+                placeholder="?"
+                class="w-16 h-16 text-center text-2xl sm:text-3xl font-extrabold text-emerald-900 bg-white border-3 border-emerald-500 rounded-2xl shadow-inner focus:outline-none focus:ring-4 focus:ring-emerald-300"
+              />
+            </div>
+
+            <!-- LÍNEA DIVISORIA DE FRACCIÓN -->
+            <div class="w-4/5 my-1.5 flex items-center gap-2">
+              <div class="h-2 flex-1 bg-amber-900 rounded-full"></div>
+              <span class="text-xs font-extrabold text-amber-900 uppercase">de un total de</span>
+              <div class="h-2 flex-1 bg-amber-900 rounded-full"></div>
+            </div>
+
+            <!-- PISO DE ABAJO: DENOMINADOR -->
+            <div class="w-full bg-sky-50 border-2 border-sky-400 rounded-2xl p-3 mt-2 flex items-center justify-between gap-3">
+              <div class="text-left">
+                <span class="inline-block bg-sky-600 text-white text-[11px] font-extrabold px-2 py-0.5 rounded-md uppercase">
+                  Piso de Abajo • Denominador
+                </span>
+                <p class="text-xs sm:text-sm font-bold text-sky-950 mt-1">
+                  ¿Cuántos espacios tiene TODO el plato? 🍽️
+                </p>
+              </div>
+              <input
+                id="mod1-den-input"
+                type="number"
+                min="0"
+                max="12"
+                placeholder="?"
+                class="w-16 h-16 text-center text-2xl sm:text-3xl font-extrabold text-sky-900 bg-white border-3 border-sky-500 rounded-2xl shadow-inner focus:outline-none focus:ring-4 focus:ring-sky-300"
+              />
+            </div>
+
+            <!-- Botones de Acción -->
+            <div class="w-full mt-5 flex flex-col sm:flex-row gap-2.5">
+              <button onclick="checkMod1Answer()" class="btn-3d flex-1 bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white font-display font-bold py-3 px-4 rounded-2xl text-base flex items-center justify-center gap-2">
+                <span>🍽️</span> ¡Servir a los Perritos!
+              </button>
+              <button onclick="countFoodHelperMod1()" title="Contar juntos los espacios" class="btn-3d bg-amber-100 hover:bg-amber-200 text-amber-900 border-2 border-amber-300 font-bold py-3 px-3.5 rounded-2xl text-sm">
+                🔢 Contar juntos
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Caja de Diagnóstico Inteligente de Rufo y Megan (Módulo 1) -->
+        <div id="mod1-feedback" class="hidden mt-5 rounded-3xl p-4 border-2 transition-all"></div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- MÓDULO 2: LA BALANZA DE PREMIOS (Décimas vs Centésimas: 0,3 vs 0,03)      -->
+    <!-- ========================================================================= -->
+    <section id="module-2" class="module-section hidden space-y-5">
+      <div class="bg-white border-4 border-amber-300 rounded-3xl p-4 sm:p-6 shadow-md">
+        
+        <!-- Encabezado Módulo 2 -->
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b-2 border-amber-100 pb-4 mb-5">
+          <div>
+            <span class="text-xs font-extrabold uppercase tracking-wider bg-sky-100 text-sky-800 px-3 py-1 rounded-full">
+              Módulo 2 • Puntos 3 y 5 del Taller
+            </span>
+            <h2 class="text-xl sm:text-2xl font-bold text-amber-950 mt-1">
+              ⚖️ La Balanza de Premios: ¿0,3 o 0,03?
+            </h2>
+            <p class="text-sm text-gray-600">
+              En tu taller coloreaste perfecto las cuadrículas de 10 y de 100. Ahora usemos esa súper habilidad para ver cómo se pesan en la <strong>Balanza Digital</strong>.
+            </p>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button onclick="toggleVisualComparator()" class="btn-3d bg-purple-100 hover:bg-purple-200 text-purple-900 border-2 border-purple-300 font-bold px-3.5 py-2 rounded-2xl text-xs sm:text-sm flex items-center gap-1.5">
+              <span>👀</span> Comparar 3/10 vs 3/100
+            </button>
+            <div id="mod2-step-pills" class="flex items-center gap-1.5"></div>
+          </div>
+        </div>
+
+        <!-- Comparador Visual Desplegable (3/10 vs 3/100 Lado a Lado) -->
+        <div id="mod2-comparator-drawer" class="hidden mb-6 bg-gradient-to-r from-purple-50 via-amber-50 to-sky-50 border-3 border-purple-300 rounded-3xl p-4 sm:p-5 shadow-inner">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="font-display font-bold text-base sm:text-lg text-purple-950 flex items-center gap-2">
+              <span>🔎</span> ¡Mira la gran diferencia entre 3/10 (0,3) y 3/100 (0,03)!
+            </h3>
+            <button onclick="toggleVisualComparator()" class="text-xs font-bold bg-white px-2.5 py-1 rounded-xl border border-purple-300 text-purple-900">
+              Cerrar ✕
+            </button>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Plato de Rufo: 3/10 = 0,3 -->
+            <div class="bg-white rounded-2xl p-3.5 border-2 border-amber-400 flex flex-col items-center">
+              <span class="bg-amber-500 text-white text-xs font-extrabold px-3 py-0.5 rounded-full mb-2">
+                Bandeja de Rufo: 3/10 (Tres décimas)
+              </span>
+              <div class="flex items-center gap-4 my-1">
+                <div class="text-center font-extrabold text-2xl text-amber-900">
+                  <div>3</div>
+                  <div class="border-t-4 border-amber-900 px-2">10</div>
+                </div>
+                <span class="text-2xl font-bold text-gray-400">=</span>
+                <div class="bg-emerald-950 text-emerald-300 font-mono text-2xl font-extrabold px-3.5 py-1.5 rounded-xl border-2 border-emerald-500">
+                  0,<span class="text-amber-300 underline">3</span>
+                </div>
+              </div>
+              <p class="text-xs text-center text-gray-700 mt-1">
+                Son <strong>3 tiras grandes completas</strong> (¡equivalen a 30 mini-croquetas!). Por eso el <strong>3</strong> va justo después de la coma, en las <strong>Décimas</strong>.
+              </p>
+            </div>
+
+            <!-- Plato de Megan: 3/100 = 0,03 -->
+            <div class="bg-white rounded-2xl p-3.5 border-2 border-pink-400 flex flex-col items-center">
+              <span class="bg-pink-500 text-white text-xs font-extrabold px-3 py-0.5 rounded-full mb-2">
+                Bandeja de Megan: 3/100 (Tres centésimas)
+              </span>
+              <div class="flex items-center gap-4 my-1">
+                <div class="text-center font-extrabold text-2xl text-pink-900">
+                  <div>3</div>
+                  <div class="border-t-4 border-pink-900 px-2">100</div>
+                </div>
+                <span class="text-2xl font-bold text-gray-400">=</span>
+                <div class="bg-emerald-950 text-emerald-300 font-mono text-2xl font-extrabold px-3.5 py-1.5 rounded-xl border-2 border-emerald-500">
+                  0,<span class="text-pink-400 underline">0</span>3
+                </div>
+              </div>
+              <p class="text-xs text-center text-gray-700 mt-1">
+                Son solo <strong>3 mini-croquetas sueltas</strong> de 100. Como no alcanzan para llenar ninguna tira de 10, ponemos un <strong>0 en las décimas</strong>: <strong>0,03</strong>.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cuerpo Principal del Ejercicio Módulo 2 -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+          
+          <!-- Izquierda: Fracción + Cuadrícula Visual (6 cols) -->
+          <div class="lg:col-span-6 bg-amber-50/70 border-2 border-amber-200 rounded-3xl p-4 sm:p-5 flex flex-col items-center">
+            <div class="w-full flex items-center justify-between mb-2">
+              <span id="mod2-challenge-tag" class="bg-sky-600 text-white font-bold text-xs px-3 py-1 rounded-full">
+                Reto 1 de 4
+              </span>
+              <span id="mod2-grid-type-badge" class="text-xs font-extrabold text-amber-900 bg-white px-3 py-1 rounded-full border border-amber-300">
+                Bandeja de 100 mini-croquetas (Centésimas)
+              </span>
+            </div>
+
+            <!-- Tarjeta de la Fracción Pedida -->
+            <div class="my-2 flex items-center gap-4 bg-white px-5 py-2.5 rounded-2xl border-2 border-amber-300 shadow-sm">
+              <div class="text-center font-display font-extrabold text-3xl text-amber-950 leading-tight">
+                <div id="mod2-frac-num" class="text-emerald-600">3</div>
+                <div class="border-t-4 border-amber-900 px-3 my-0.5"></div>
+                <div id="mod2-frac-den" class="text-sky-600">100</div>
+              </div>
+              <div class="text-left">
+                <div id="mod2-recipe-title" class="font-bold text-amber-950 text-base">
+                  3 mini-croquetas de 100 para Megan
+                </div>
+                <div id="mod2-recipe-sub" class="text-xs text-gray-600">
+                  Observa cuántas tiras de 10 completas y cuántos cuadritos sueltos hay:
+                </div>
+              </div>
+            </div>
+
+            <!-- Cuadrícula Visual de 10 o 100 -->
+            <div id="mod2-grid-wrapper" class="w-full max-w-[270px] aspect-square bg-white border-4 border-amber-400 rounded-2xl p-2.5 shadow-inner my-2">
+              <!-- Se inyecta por JS -->
+            </div>
+
+            <div id="mod2-visual-summary" class="text-xs sm:text-sm font-bold text-amber-900 bg-amber-100/80 px-3.5 py-1.5 rounded-xl mt-1 text-center">
+              0 tiras completas de 10 • 3 mini-croquetas sueltas
+            </div>
+          </div>
+
+          <!-- Derecha: La Balanza Digital con Casillas Etiquetadas (6 cols) -->
+          <div class="lg:col-span-6 bg-gradient-to-b from-slate-800 to-slate-900 text-white rounded-3xl p-5 sm:p-6 border-4 border-slate-600 shadow-lg flex flex-col items-center">
+            <div class="flex items-center gap-2 text-amber-300 font-display font-bold text-lg mb-1">
+              <span>⚖️</span> BALANZA DIGITAL CANINA
+            </div>
+            <p class="text-xs text-slate-300 text-center mb-4">
+              Escribe cada cifra en su casilla o elige la tarjeta decimal correcta abajo:
+            </p>
+
+            <!-- Pantalla Digital con Casillas [Unidades] , [Décimas] [Centésimas] -->
+            <div class="w-full bg-emerald-950 border-4 border-emerald-500/80 rounded-2xl p-3.5 sm:p-4 shadow-inner flex items-end justify-center gap-1.5 sm:gap-3">
+              
+              <!-- Unidades -->
+              <div class="flex flex-col items-center">
+                <span class="text-[10px] sm:text-xs font-extrabold uppercase text-amber-300 mb-1 text-center">
+                  Enteros<br><span class="text-[9px] text-slate-300">(Bandejas)</span>
+                </span>
+                <input id="mod2-digit-unit" type="text" maxlength="1" value="0"
+                  class="w-12 h-14 sm:w-14 sm:h-16 text-center text-2xl sm:text-3xl font-mono font-extrabold bg-emerald-900/90 text-white border-2 border-amber-400 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-300" />
+              </div>
+
+              <!-- La Coma Decimal -->
+              <div class="text-4xl sm:text-5xl font-mono font-extrabold text-amber-400 pb-1 px-0.5">
+                ,
+              </div>
+
+              <!-- Décimas -->
+              <div class="flex flex-col items-center">
+                <span class="text-[10px] sm:text-xs font-extrabold uppercase text-sky-300 mb-1 text-center">
+                  Décimas<br><span class="text-[9px] text-slate-300">(Tiras de 10)</span>
+                </span>
+                <input id="mod2-digit-tenth" type="text" maxlength="1" placeholder="?"
+                  class="w-12 h-14 sm:w-14 sm:h-16 text-center text-2xl sm:text-3xl font-mono font-extrabold bg-emerald-900/90 text-sky-200 border-2 border-sky-400 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-300" />
+              </div>
+
+              <!-- Centésimas -->
+              <div id="mod2-hundredth-box" class="flex flex-col items-center">
+                <span class="text-[10px] sm:text-xs font-extrabold uppercase text-pink-300 mb-1 text-center">
+                  Centésimas<br><span class="text-[9px] text-slate-300">(Cuadritos)</span>
+                </span>
+                <input id="mod2-digit-hundredth" type="text" maxlength="1" placeholder="?"
+                  class="w-12 h-14 sm:w-14 sm:h-16 text-center text-2xl sm:text-3xl font-mono font-extrabold bg-emerald-900/90 text-pink-200 border-2 border-pink-400 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-300" />
+              </div>
+
+            </div>
+
+            <!-- Botones Rápidos con las Opciones del Taller -->
+            <div class="w-full mt-4">
+              <p class="text-xs text-slate-300 text-center mb-2 font-bold">
+                O toca una etiqueta rápida para cargarla en la balanza:
+              </p>
+              <div class="grid grid-cols-4 gap-2">
+                <button onclick="fillScaleQuick('0,83')" class="btn-3d bg-slate-700 hover:bg-slate-600 text-amber-200 font-mono font-extrabold py-2 rounded-xl text-base border border-slate-500">
+                  0,83
+                </button>
+                <button onclick="fillScaleQuick('0,3')" class="btn-3d bg-slate-700 hover:bg-slate-600 text-amber-200 font-mono font-extrabold py-2 rounded-xl text-base border border-slate-500">
+                  0,3
+                </button>
+                <button onclick="fillScaleQuick('0,03')" class="btn-3d bg-slate-700 hover:bg-slate-600 text-amber-200 font-mono font-extrabold py-2 rounded-xl text-base border border-slate-500">
+                  0,03
+                </button>
+                <button onclick="fillScaleQuick('0,2')" class="btn-3d bg-slate-700 hover:bg-slate-600 text-amber-200 font-mono font-extrabold py-2 rounded-xl text-base border border-slate-500">
+                  0,2
+                </button>
+              </div>
+            </div>
+
+            <!-- Botón Comprobar Peso -->
+            <button onclick="checkMod2Answer()" class="btn-3d w-full mt-5 bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-500 hover:to-orange-600 text-slate-950 font-display font-bold py-3 px-4 rounded-2xl text-base flex items-center justify-center gap-2">
+              <span>⚖️</span> ¡Pesar Ración en la Balanza!
+            </button>
+          </div>
+        </div>
+
+        <!-- Retroalimentación Módulo 2 -->
+        <div id="mod2-feedback" class="hidden mt-5 rounded-3xl p-4 border-2 transition-all"></div>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- MÓDULO 3: EL RECETARIO DE LA CHEF (Lectura de Decimales + Ortografía)     -->
+    <!-- ========================================================================= -->
+    <section id="module-3" class="module-section hidden space-y-5">
+      <div class="bg-white border-4 border-amber-300 rounded-3xl p-4 sm:p-6 shadow-md">
+        
+        <!-- Encabezado Módulo 3 -->
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b-2 border-amber-100 pb-4 mb-5">
+          <div>
+            <span class="text-xs font-extrabold uppercase tracking-wider bg-pink-100 text-pink-800 px-3 py-1 rounded-full">
+              Módulo 3 • Punto 4 del Taller
+            </span>
+            <h2 class="text-xl sm:text-2xl font-bold text-amber-950 mt-1">
+              📖 El Recetario de la Chef: ¿Cómo se lee y se escribe?
+            </h2>
+            <p class="text-sm text-gray-600">
+              Usa el <strong>Detector de Cifras</strong> después de la coma para saber cuándo son <strong>décimas</strong> (1 cifra) y cuándo son <strong>centésimas</strong> (2 cifras), y completa el reto ortográfico de Megan.
+            </p>
+          </div>
+
+          <div id="mod3-step-pills" class="flex items-center gap-1.5"></div>
+        </div>
+
+        <!-- TRADUCTOR VISUAL DE RECETAS (Separador de la Coma + Contador de dígitos) -->
+        <div class="bg-gradient-to-r from-amber-50 via-white to-pink-50 border-3 border-amber-300 rounded-3xl p-4 sm:p-5 mb-6 shadow-inner">
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+            
+            <!-- Izquierda de la coma: Tazas Enteras -->
+            <div class="md:col-span-5 bg-emerald-50 border-2 border-emerald-300 rounded-2xl p-3.5 text-center">
+              <span class="text-[11px] font-extrabold uppercase bg-emerald-600 text-white px-2.5 py-0.5 rounded-full">
+                1. Antes de la coma (Enteros)
+              </span>
+              <div id="mod3-whole-display" class="text-4xl font-mono font-extrabold text-emerald-900 my-1">
+                0
+              </div>
+              <p id="mod3-whole-tip" class="text-xs font-bold text-emerald-800">
+                Hay <strong>0 enteros</strong>. ¡Ojo! Nunca se llama "cero centésimas". Puedes no nombrarlo o decir "cero enteros".
+              </p>
+            </div>
+
+            <!-- La Coma Separadora -->
+            <div class="md:col-span-2 flex flex-col items-center justify-center">
+              <div class="w-12 h-12 rounded-2xl bg-amber-400 text-amber-950 font-mono font-extrabold text-3xl flex items-center justify-center shadow">
+                ,
+              </div>
+              <span class="text-[11px] font-extrabold text-amber-800 mt-1 uppercase">La Coma</span>
+            </div>
+
+            <!-- Derecha de la coma: Detector Automático de Cifras -->
+            <div class="md:col-span-5 bg-purple-50 border-2 border-purple-300 rounded-2xl p-3.5 text-center">
+              <span class="text-[11px] font-extrabold uppercase bg-purple-600 text-white px-2.5 py-0.5 rounded-full">
+                2. Después de la coma (Detector)
+              </span>
+              <div id="mod3-dec-display" class="text-4xl font-mono font-extrabold text-purple-900 my-1 flex items-center justify-center gap-1">
+                <!-- Cifras individuales -->
+              </div>
+              <!-- Carteles que se iluminan según 1 o 2 cifras -->
+              <div class="flex items-center justify-center gap-2 mt-1">
+                <span id="mod3-badge-decimas" class="px-2.5 py-1 rounded-xl text-xs font-extrabold transition-all">
+                  1 cifra = DÉCIMAS
+                </span>
+                <span id="mod3-badge-centesimas" class="px-2.5 py-1 rounded-xl text-xs font-extrabold transition-all">
+                  2 cifras = CENTÉSIMAS
+                </span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- PASO 1 Y PASO 2 DEL RECETARIO -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          
+          <!-- PASO 1: Construir cómo se lee el número con fichas -->
+          <div class="bg-amber-50/70 border-2 border-amber-300 rounded-3xl p-4 sm:p-5 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="bg-amber-600 text-white text-xs font-extrabold px-3 py-1 rounded-full">
+                  Paso 1 • ¿Cómo se lee?
+                </span>
+                <span id="mod3-number-tag" class="font-mono font-extrabold text-xl text-amber-950 bg-white px-3 py-0.5 rounded-xl border border-amber-300">
+                  0,7
+                </span>
+              </div>
+
+              <p class="text-xs sm:text-sm text-gray-700 font-semibold mb-3">
+                Toca las palabras en orden para armar cómo se lee este número decimal:
+              </p>
+
+              <!-- Bandeja donde se arma la frase -->
+              <div id="mod3-sentence-tray" class="min-h-[64px] bg-white border-3 border-dashed border-amber-400 rounded-2xl p-3 flex flex-wrap items-center gap-2 mb-3">
+                <span class="text-xs text-gray-400 italic">Toca las tarjetas de abajo para colocarlas aquí...</span>
+              </div>
+
+              <!-- Banco de fichas de palabras -->
+              <div id="mod3-word-bank" class="flex flex-wrap gap-2 my-3">
+                <!-- Generado dinámicamente -->
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2 mt-3">
+              <button onclick="clearMod3Sentence()" class="btn-3d bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2.5 px-3.5 rounded-2xl text-xs sm:text-sm">
+                🔄 Borrar frase
+              </button>
+              <button onclick="checkMod3Step1()" class="btn-3d flex-1 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-display font-bold py-2.5 px-4 rounded-2xl text-sm sm:text-base">
+                ✔️ Comprobar Lectura
+              </button>
+            </div>
+          </div>
+
+          <!-- PASO 2: Reto Ortográfico de Megan -->
+          <div id="mod3-step2-card" class="bg-pink-50/70 border-2 border-pink-300 rounded-3xl p-4 sm:p-5 flex flex-col justify-between opacity-60 pointer-events-none transition-all">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="bg-pink-600 text-white text-xs font-extrabold px-3 py-1 rounded-full">
+                  Paso 2 • Reto Ortográfico de Megan ✏️
+                </span>
+                <span class="text-xs font-bold text-pink-900">¡Supera las letras traviesas!</span>
+              </div>
+
+              <p id="mod3-ortho-prompt" class="text-xs sm:text-sm text-gray-700 font-semibold mb-3">
+                Completa las letras subrayadas que tu profe revisó en el taller:
+              </p>
+
+              <!-- Palabra con huecos interactivos -->
+              <div id="mod3-ortho-word-box" class="bg-white border-3 border-pink-300 rounded-2xl p-4 text-center my-2 flex flex-wrap items-center justify-center gap-1 text-lg sm:text-xl font-extrabold text-amber-950">
+                <!-- Se genera dinámicamente -->
+              </div>
+
+              <!-- Pista cariñosa de ortografía -->
+              <div id="mod3-ortho-tip" class="bg-white/90 border border-pink-200 rounded-2xl p-3 text-xs text-pink-950 font-semibold mt-3">
+                💡 <strong>Pista de Megan:</strong> La palabra <strong>d<u>éc</u>imas</strong> lleva tilde en la <strong>é</strong> y se escribe con <strong>c</strong> (viene de diez -> décimo).
+              </div>
+            </div>
+
+            <button onclick="checkMod3Step2()" class="btn-3d w-full mt-4 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-display font-bold py-2.5 px-4 rounded-2xl text-sm sm:text-base">
+              🌟 ¡Guardar Receta Perfecta!
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Retroalimentación Módulo 3 -->
+        <div id="mod3-feedback" class="hidden mt-5 rounded-3xl p-4 border-2 transition-all"></div>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- MÓDULO 4: EL OLFATO INSPECTOR (Unir Fracciones sin dejar nada en blanco)  -->
+    <!-- ========================================================================= -->
+    <section id="module-4" class="module-section hidden space-y-5">
+      <div class="bg-white border-4 border-amber-300 rounded-3xl p-4 sm:p-6 shadow-md">
+        
+        <!-- Encabezado Módulo 4 -->
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b-2 border-amber-100 pb-4 mb-5">
+          <div>
+            <span class="text-xs font-extrabold uppercase tracking-wider bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full">
+              Módulo 4 • Puntos 5 y 6 del Taller
+            </span>
+            <h2 class="text-xl sm:text-2xl font-bold text-amber-950 mt-1">
+              🔍 El Olfato Inspector: ¡Une todas las raciones!
+            </h2>
+            <p class="text-sm text-gray-600">
+              Toca una fracción a la izquierda y luego su pareja a la derecha para trazar la línea. <strong>Megan olfateará</strong> antes de calificar para que nunca quede una línea en blanco por descuido.
+            </p>
+          </div>
+
+          <!-- Selector de Ronda 1 (Nombres) y Ronda 2 (Decimales) -->
+          <div class="flex items-center gap-2">
+            <button onclick="loadMod4Round(0)" id="mod4-round-btn-0" class="btn-3d px-3.5 py-2 rounded-2xl font-bold text-xs sm:text-sm">
+              Ronda 1: Fracción con su Nombre
+            </button>
+            <button onclick="loadMod4Round(1)" id="mod4-round-btn-1" class="btn-3d px-3.5 py-2 rounded-2xl font-bold text-xs sm:text-sm">
+              Ronda 2: Fracción con su Decimal
+            </button>
+          </div>
+        </div>
+
+        <!-- Instrucción rápida -->
+        <div class="flex flex-wrap items-center justify-between gap-2 bg-amber-50 border border-amber-200 rounded-2xl px-4 py-2.5 mb-4">
+          <span id="mod4-status-text" class="text-xs sm:text-sm font-bold text-amber-950">
+            👆 Toca una tarjeta de la columna izquierda y luego su pareja de la derecha.
+          </span>
+          <button onclick="resetMod4Connections()" class="text-xs font-extrabold text-amber-800 hover:text-amber-950 underline">
+            Reiniciar líneas de esta ronda
+          </button>
+        </div>
+
+        <!-- TABLERO DE EMPAREJAR CON LÍNEAS SVG -->
+        <div id="mod4-board" class="relative w-full bg-gradient-to-b from-amber-50/40 to-orange-50/40 border-2 border-amber-200 rounded-3xl p-4 sm:p-6">
+          
+          <!-- Lienzo SVG para dibujar las líneas de unión -->
+          <svg id="mod4-svg-lines" class="absolute inset-0 w-full h-full pointer-events-none z-10"></svg>
+
+          <!-- Columnas Izquierda y Derecha -->
+          <div class="relative z-20 grid grid-cols-2 gap-10 sm:gap-24 items-center">
+            <!-- Columna Izquierda: Fracciones -->
+            <div id="mod4-left-col" class="space-y-3.5"></div>
+            <!-- Columna Derecha: Nombres o Decimales -->
+            <div id="mod4-right-col" class="space-y-3.5"></div>
+          </div>
+
+        </div>
+
+        <!-- Botón de Revisar Pedido con el Olfato Inspector de Megan -->
+        <div class="mt-5 flex justify-center">
+          <button onclick="inspectAndCheckMod4()" class="btn-3d bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-display font-bold py-3.5 px-8 rounded-2xl text-base sm:text-lg flex items-center gap-2.5 shadow-md">
+            <span>🐾</span> ¡Pasar el Olfato Inspector y Revisar!
+          </button>
+        </div>
+
+        <!-- Retroalimentación Módulo 4 -->
+        <div id="mod4-feedback" class="hidden mt-5 rounded-3xl p-4 border-2 transition-all"></div>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- MÓDULO 5: MODO PRÁCTICA LIBRE DE COCINA (Sandbox Creativo)                -->
+    <!-- ========================================================================= -->
+    <section id="module-5" class="module-section hidden space-y-5">
+      <div class="bg-white border-4 border-amber-300 rounded-3xl p-4 sm:p-6 shadow-md">
+        <div class="border-b-2 border-amber-100 pb-4 mb-5 flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <span class="text-xs font-extrabold uppercase tracking-wider bg-amber-100 text-amber-800 px-3 py-1 rounded-full">
+              Laboratorio Culinario Libre
+            </span>
+            <h2 class="text-xl sm:text-2xl font-bold text-amber-950 mt-1">
+              👩‍🍳 ¡Modo Práctica Libre de Cocina para Megan y Rufo!
+            </h2>
+            <p class="text-sm text-gray-600">
+              Elige el tamaño del plato, sirve los ingredientes que quieras tocando las casillas y observa cómo cambian la fracción, el número decimal y su nombre en tiempo real.
+            </p>
+          </div>
+        </div>
+
+        <!-- Controles del Laboratorio -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          <!-- Elegir Perrito -->
+          <div class="bg-amber-50 border-2 border-amber-200 rounded-2xl p-3">
+            <label class="text-xs font-extrabold uppercase text-amber-900 block mb-1.5">1. ¿Para quién cocinas?</label>
+            <div class="grid grid-cols-2 gap-2">
+              <button onclick="setSandboxDog('Megan')" id="sb-dog-Megan" class="btn-3d py-2 rounded-xl font-bold text-xs sm:text-sm bg-pink-500 text-white">
+                🎀 Megan
+              </button>
+              <button onclick="setSandboxDog('Rufo')" id="sb-dog-Rufo" class="btn-3d py-2 rounded-xl font-bold text-xs sm:text-sm bg-white text-amber-900 border border-amber-300">
+                🧣 Rufo
+              </button>
+            </div>
+          </div>
+
+          <!-- Elegir Tamaño del Plato (Denominador) -->
+          <div class="bg-amber-50 border-2 border-amber-200 rounded-2xl p-3">
+            <label class="text-xs font-extrabold uppercase text-amber-900 block mb-1.5">2. Total de divisiones (Denominador):</label>
+            <div class="flex flex-wrap gap-1.5">
+              <button onclick="setSandboxDenominator(2)" class="sb-den-btn btn-3d px-2.5 py-1.5 rounded-xl font-extrabold text-xs bg-white border border-amber-300">2</button>
+              <button onclick="setSandboxDenominator(4)" class="sb-den-btn btn-3d px-2.5 py-1.5 rounded-xl font-extrabold text-xs bg-amber-500 text-white">4</button>
+              <button onclick="setSandboxDenominator(5)" class="sb-den-btn btn-3d px-2.5 py-1.5 rounded-xl font-extrabold text-xs bg-white border border-amber-300">5</button>
+              <button onclick="setSandboxDenominator(6)" class="sb-den-btn btn-3d px-2.5 py-1.5 rounded-xl font-extrabold text-xs bg-white border border-amber-300">6</button>
+              <button onclick="setSandboxDenominator(8)" class="sb-den-btn btn-3d px-2.5 py-1.5 rounded-xl font-extrabold text-xs bg-white border border-amber-300">8</button>
+              <button onclick="setSandboxDenominator(10)" class="sb-den-btn btn-3d px-2.5 py-1.5 rounded-xl font-extrabold text-xs bg-white border border-amber-300">10 (Décimas)</button>
+            </div>
+          </div>
+
+          <!-- Elegir Ingrediente -->
+          <div class="bg-amber-50 border-2 border-amber-200 rounded-2xl p-3">
+            <label class="text-xs font-extrabold uppercase text-amber-900 block mb-1.5">3. Ingrediente favorito:</label>
+            <div class="grid grid-cols-3 gap-1.5">
+              <button onclick="setSandboxFood('🍗 Pollo')" class="btn-3d py-1.5 rounded-xl text-xs font-bold bg-white border border-amber-300">🍗 Pollo</button>
+              <button onclick="setSandboxFood('🥩 Carne')" class="btn-3d py-1.5 rounded-xl text-xs font-bold bg-white border border-amber-300">🥩 Carne</button>
+              <button onclick="setSandboxFood('🦴 Croquetas')" class="btn-3d py-1.5 rounded-xl text-xs font-bold bg-white border border-amber-300">🦴 Croquetas</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Plato Interactivo Libre + Panel de Lectura Automática -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+          <div class="lg:col-span-7 bg-amber-50/60 border-2 border-amber-200 rounded-3xl p-5 flex flex-col items-center">
+            <p class="text-sm font-bold text-amber-950 mb-3">
+              👇 Toca los espacios del plato para servir o quitar porciones:
+            </p>
+            <div id="sandbox-plate" class="w-full max-w-md grid grid-cols-2 sm:grid-cols-5 gap-2.5 bg-white p-4 rounded-3xl border-4 border-amber-400 shadow-inner"></div>
+            <div class="mt-3 flex gap-2">
+              <button onclick="fillAllSandbox(true)" class="text-xs font-bold bg-emerald-100 text-emerald-900 px-3 py-1.5 rounded-xl border border-emerald-300">
+                Llenar todo el plato
+              </button>
+              <button onclick="fillAllSandbox(false)" class="text-xs font-bold bg-gray-100 text-gray-700 px-3 py-1.5 rounded-xl border border-gray-300">
+                Vaciar plato
+              </button>
+            </div>
+          </div>
+
+          <!-- Panel de Traducción Instantánea -->
+          <div class="lg:col-span-5 bg-gradient-to-b from-amber-50 to-white border-3 border-amber-300 rounded-3xl p-5 space-y-3">
+            <h3 class="font-display font-bold text-lg text-amber-950 text-center">
+              📊 Panel Nutricional en Vivo
+            </h3>
+
+            <div class="flex items-center justify-around bg-white p-3 rounded-2xl border-2 border-amber-200">
+              <!-- Fracción en vivo -->
+              <div class="text-center">
+                <span class="text-[11px] font-bold text-gray-500 uppercase">Fracción Servida</span>
+                <div class="font-display font-extrabold text-3xl leading-tight mt-1">
+                  <div id="sb-num" class="text-emerald-600">3</div>
+                  <div class="border-t-4 border-amber-900 px-4 my-0.5"></div>
+                  <div id="sb-den" class="text-sky-600">4</div>
+                </div>
+              </div>
+
+              <!-- Decimal en vivo -->
+              <div class="text-center">
+                <span class="text-[11px] font-bold text-gray-500 uppercase">Peso en Balanza</span>
+                <div id="sb-decimal" class="font-mono font-extrabold text-2xl bg-emerald-950 text-emerald-300 px-3.5 py-2 rounded-xl border-2 border-emerald-500 mt-1">
+                  0,75
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white p-3 rounded-2xl border border-amber-200 text-xs sm:text-sm space-y-1">
+              <div>🟢 <strong>Porciones CON comida (Arriba):</strong> <span id="sb-filled-text">3</span></div>
+              <div>⚪ <strong>Espacios vacíos:</strong> <span id="sb-empty-text">1</span></div>
+              <div>🔵 <strong>Total del plato (Abajo):</strong> <span id="sb-total-text">4</span></div>
+              <div>⭐ <strong>Tipo de fracción (Punto 2):</strong> <span id="sb-type-text" class="font-bold text-emerald-700">Propia (P)</span></div>
+              <div>🗣️ <strong>Cómo se lee:</strong> <span id="sb-reading-text" class="font-bold text-amber-900">Tres cuartos (setenta y cinco centésimas)</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= MODAL DE DIPLOMA / MEDALLA "¡TÚ PUEDES!" ================= -->
+  <div id="diplomaModal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white border-4 border-amber-400 rounded-3xl max-w-lg w-full p-6 shadow-2xl text-center relative animate-float">
+      <button onclick="closeDiplomaModal()" class="absolute top-3 right-3 w-9 h-9 rounded-full bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold">
+        ✕
+      </button>
+
+      <div class="text-5xl mb-2">🏅🐶🐾</div>
+      <div class="inline-block bg-gradient-to-r from-amber-400 to-orange-500 text-white font-display font-bold px-5 py-1 rounded-full text-sm uppercase tracking-wider shadow">
+        ¡Tú puedes! • Gracias Chef
+      </div>
+
+      <h2 class="text-2xl sm:text-3xl font-bold text-amber-950 mt-3">
+        Diploma de Chef Canina Estrella
+      </h2>
+      <p class="text-sm text-gray-600 mt-1">
+        Otorgado con mucho cariño por <strong>Megan</strong> y <strong>Rufo</strong> a su chef favorita:
+      </p>
+
+      <div class="my-4">
+        <input id="chefNameInput" type="text" placeholder="Escribe aquí tu nombre de Chef..."
+          class="w-full text-center font-display font-bold text-xl text-amber-900 bg-amber-50 border-2 border-amber-400 rounded-2xl py-2.5 px-4 focus:outline-none focus:ring-4 focus:ring-amber-200" />
+      </div>
+
+      <!-- Resumen de logros -->
+      <div class="bg-amber-50 border-2 border-amber-200 rounded-2xl p-3.5 text-left text-xs sm:text-sm space-y-1.5 mb-4">
+        <div class="font-extrabold text-amber-950 text-center mb-1">⭐ Tus Súper Poderes Matemáticos ⭐</div>
+        <div>✅ <strong>Fracciones de 2 pisos:</strong> Cuentas arriba las porciones CON comida y abajo el TOTAL del plato.</div>
+        <div>✅ <strong>Balanza de Décimas y Centésimas:</strong> Distingues <strong>3/10 (0,3)</strong> de <strong>3/100 (0,03)</strong>.</div>
+        <div>✅ <strong>Recetario y Ortografía:</strong> Sabes leer decimales y escribir <em>e<strong>n</strong>tero</em>, <em><strong>v</strong>ei<strong>n</strong>ticinco</em> y <em>d<strong>éc</strong>imas</em>.</div>
+        <div>✅ <strong>Olfato Inspector:</strong> Revisas que ninguna fracción como <strong>1/10 (Un décimo)</strong> se quede sin unir.</div>
+      </div>
+
+      <div class="text-sm font-extrabold text-pink-600 mb-4">
+        Estrellas ganadas hasta ahora: <span id="modalStarScore">0</span> / 18 ⭐
+      </div>
+
+      <button onclick="closeDiplomaModal()" class="btn-3d w-full bg-gradient-to-r from-emerald-500 to-green-600 text-white font-display font-bold py-3 rounded-2xl text-base">
+        ¡Seguir Cocinando con Megan y Rufo! 🐾
+      </button>
+    </div>
+  </div>
+
+  <!-- ================= PIE DE PÁGINA MOTIVADOR ================= -->
+  <footer class="max-w-5xl mx-auto px-4 pt-6 text-center text-xs sm:text-sm text-amber-800 font-bold">
+    ⭐ "¡Tú puedes!" — Megan 🎀 y Rufo 🧣 aprenden contigo paso a paso ⭐
+  </footer>
+
+  <!-- ================= LÓGICA JAVASCRIPT DE LA APLICACIÓN ================= -->
+  <script>
+    /*************************************************************************
+     * 1. SISTEMA DE AUDIO WEB API (Sin archivos pesados externos)
+     *************************************************************************/
+    let soundEnabled = true;
+    let audioCtx = null;
+
+    function getAudioContext() {
+      if (!audioCtx) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) {
+          audioCtx = new AudioContextClass();
+        }
+      }
+      if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      return audioCtx;
+    }
+
+    function toggleSound() {
+      soundEnabled = !soundEnabled;
+      const btn = document.getElementById('soundToggleBtn');
+      btn.textContent = soundEnabled ? '🔊' : '🔇';
+      if (soundEnabled) playSound('click');
+    }
+
+    function playSound(type) {
+      if (!soundEnabled) return;
+      try {
+        const ctx = getAudioContext();
+        if (!ctx) return;
+        const now = ctx.currentTime;
+
+        if (type === 'click') {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(520, now);
+          osc.frequency.exponentialRampToValueAtTime(680, now + 0.06);
+          gain.gain.setValueAtTime(0.12, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.06);
+        } else if (type === 'success') {
+          // Campanita alegre de acierto (Do - Mi - Sol - Do)
+          const notes = [523.25, 659.25, 783.99, 1046.5];
+          notes.forEach((freq, idx) => {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+            gain.gain.setValueAtTime(0.18, now + idx * 0.08);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.25);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start(now + idx * 0.08);
+            osc.stop(now + idx * 0.08 + 0.25);
+          });
+        } else if (type === 'bark') {
+          // Ladrido amistoso de alerta suave (dos tonos cortos)
+          [0, 0.14].forEach((offset) => {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(220, now + offset);
+            osc.frequency.exponentialRampToValueAtTime(340, now + offset + 0.05);
+            osc.frequency.exponentialRampToValueAtTime(170, now + offset + 0.11);
+            gain.gain.setValueAtTime(0.12, now + offset);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + offset + 0.12);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start(now + offset);
+            osc.stop(now + offset + 0.12);
+          });
+        } else if (type === 'fanfare') {
+          const notes = [523.25, 659.25, 783.99, 659.25, 1046.5];
+          const times = [0, 0.12, 0.24, 0.36, 0.48];
+          notes.forEach((freq, i) => {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, now + times[i]);
+            gain.gain.setValueAtTime(0.2, now + times[i]);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + times[i] + 0.35);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start(now + times[i]);
+            osc.stop(now + times[i] + 0.35);
+          });
+        }
+      } catch (e) {
+        // Ignorar errores de audio en navegadores restrictivos
+      }
+    }
+
+    /*************************************************************************
+     * 2. ESTADO GLOBAL DE PROGRESO Y ESTRELLAS
+     *************************************************************************/
+    const completedTasks = {
+      mod1: [false, false, false, false, false, false], // 6 retos
+      mod2: [false, false, false, false],               // 4 retos
+      mod3: [false, false, false, false],               // 4 retos
+      mod4: [false, false, false, false]                // 2 rondas x 2 estrellas = 4 estrellas
+    };
+
+    function updateStarsUI() {
+      const c1 = completedTasks.mod1.filter(Boolean).length;
+      const c2 = completedTasks.mod2.filter(Boolean).length;
+      const c3 = completedTasks.mod3.filter(Boolean).length;
+      const c4 = completedTasks.mod4.filter(Boolean).length;
+      const total = c1 + c2 + c3 + c4;
+
+      document.getElementById('starCountDisplay').textContent = total;
+      document.getElementById('modalStarScore').textContent = total;
+      document.getElementById('badge-mod-1').textContent = `${c1}/6`;
+      document.getElementById('badge-mod-2').textContent = `${c2}/4`;
+      document.getElementById('badge-mod-3').textContent = `${c3}/4`;
+      document.getElementById('badge-mod-4').textContent = `${c4}/4`;
+    }
+
+    function switchModule(modNumber) {
+      playSound('click');
+      document.querySelectorAll('.module-section').forEach(sec => sec.classList.add('hidden'));
+      document.getElementById(`module-${modNumber}`).classList.remove('hidden');
+
+      document.querySelectorAll('.module-tab').forEach(tab => {
+        tab.className = 'module-tab btn-3d px-3.5 py-2 rounded-2xl font-display font-semibold text-xs sm:text-sm flex items-center gap-1.5 transition-all bg-amber-100 text-amber-900 border-2 border-amber-300';
+      });
+      const activeTab = document.getElementById(`tab-mod-${modNumber}`);
+      if (activeTab) {
+        activeTab.className = 'module-tab btn-3d px-3.5 py-2 rounded-2xl font-display font-semibold text-xs sm:text-sm flex items-center gap-1.5 transition-all bg-gradient-to-r from-amber-500 to-orange-500 text-white border-2 border-amber-600';
+      }
+
+      const mascotMessages = {
+        1: '🍗 Módulo 1: "¡Recuerda! Arriba contamos solo los espacios CON comida, y abajo TODOS los espacios del plato."',
+        2: '⚖️ Módulo 2: "¡Cuidado con el cero después de la coma! 3 tiras de 10 es 0,3 pero 3 mini-croquetas de 100 es 0,03."',
+        3: '📖 Módulo 3: "El cero antes de la coma nunca se llama cero centésimas. ¡Mira cuántas cifras hay después de la coma!"',
+        4: '🔍 Módulo 4: "¡Mi olfato inspector revisará que ninguna fracción como 1/10 se quede sin su línea antes de entregar!"',
+        5: '👩‍🍳 Cocina Libre: "¡Sirve las porciones que quieras para mí y para Rufo y experimenta con las fracciones!"'
+      };
+      document.getElementById('topMascotMessage').textContent = mascotMessages[modNumber] || '';
+
+      if (modNumber === 4) {
+        setTimeout(drawMod4Lines, 60);
+      }
+    }
+
+    /*************************************************************************
+     * 3. MÓDULO 1: EL PLATO COMPARTIDO (Puntos 1A, 1B, 1C, 1D + 2 Retos Interactivos)
+     *************************************************************************/
+    const mod1Challenges = [
+      {
+        id: 0,
+        tag: 'Ejercicio 1.A de tu Taller',
+        dog: 'Megan',
+        layout: 'row-4',
+        total: 4,
+        filled: 3,
+        emptyCount: 1,
+        foodEmoji: '🍗',
+        foodName: 'pollo asado',
+        interactiveServe: false,
+        instruction: 'Este es el plato 1.A de tu hoja: tiene 3 espacios con pollo y 1 espacio vacío. ¿Qué fracción tiene comida?'
+      },
+      {
+        id: 1,
+        tag: 'Ejercicio 1.B de tu Taller',
+        dog: 'Rufo',
+        layout: 'row-6',
+        total: 6,
+        filled: 2,
+        emptyCount: 4,
+        foodEmoji: '🥩',
+        foodName: 'carne jugosa',
+        interactiveServe: false,
+        instruction: 'Este es el plato 1.B de tu hoja: tiene 2 espacios con carne y 4 espacios vacíos. ¡Escribe los dos pisos de la fracción!'
+      },
+      {
+        id: 2,
+        tag: 'Ejercicio 1.C de tu Taller',
+        dog: 'Megan',
+        layout: 'grid-2x2',
+        total: 4,
+        filled: 3,
+        emptyCount: 1,
+        foodEmoji: '🍲',
+        foodName: 'arroz con pollo',
+        interactiveServe: false,
+        instruction: 'Este es el plato cuadrado 1.C de tu hoja: tiene 3 porciones servidas de 4 espacios en total.'
+      },
+      {
+        id: 3,
+        tag: 'Ejercicio 1.D de tu Taller',
+        dog: 'Rufo',
+        layout: 'row-5',
+        total: 5,
+        filled: 1,
+        emptyCount: 4,
+        foodEmoji: '🦴',
+        foodName: 'croquetas crocantes',
+        interactiveServe: false,
+        instruction: 'Este es el plato 1.D de tu hoja: solo 1 espacio tiene croquetas y hay 4 vacíos. ¿Qué fracción representa la comida?'
+      },
+      {
+        id: 4,
+        tag: 'Reto Chef 5 • ¡Sirve tú misma!',
+        dog: 'Rufo',
+        layout: 'row-6',
+        total: 6,
+        filled: 4,
+        emptyCount: 2,
+        foodEmoji: '🥩',
+        foodName: 'albóndigas',
+        interactiveServe: true,
+        userSlots: [false, false, false, false, false, false],
+        instruction: '¡Ahora tú eres la Chef! Toca el plato para servir 4/6 (cuatro sextos) de albóndigas para Rufo y escríbelo en la etiqueta.'
+      },
+      {
+        id: 5,
+        tag: 'Reto Chef 6 • ¡Sirve tú misma!',
+        dog: 'Megan',
+        layout: 'row-5',
+        total: 5,
+        filled: 2,
+        emptyCount: 3,
+        foodEmoji: '🐟',
+        foodName: 'bocados de salmón',
+        interactiveServe: true,
+        userSlots: [false, false, false, false, false],
+        instruction: 'Megan quiere 2/5 (dos quintos) de salmón. ¡Toca 2 espacios del plato para servirle y completa la fracción!'
+      }
+    ];
+
+    let currentMod1Index = 0;
+    let showNumbersOnPlateMod1 = false;
+
+    function renderMod1Pills() {
+      const container = document.getElementById('mod1-step-pills');
+      const labels = ['1.A (3/4)', '1.B (2/6)', '1.C (3/4)', '1.D (1/5)', 'Chef 5', 'Chef 6'];
+      container.innerHTML = labels.map((label, idx) => {
+        const isDone = completedTasks.mod1[idx];
+        const isCurrent = idx === currentMod1Index;
+        let cls = 'px-3 py-1.5 rounded-xl font-bold text-xs transition-all ';
+        if (isCurrent) {
+          cls += 'bg-amber-600 text-white shadow ring-2 ring-amber-300';
+        } else if (isDone) {
+          cls += 'bg-emerald-100 text-emerald-900 border border-emerald-400';
+        } else {
+          cls += 'bg-amber-100 text-amber-900 hover:bg-amber-200';
+        }
+        return `<button onclick="loadMod1Challenge(${idx})" class="${cls}">${isDone ? '⭐ ' : ''}${label}</button>`;
+      }).join('');
+    }
+
+    function loadMod1Challenge(idx) {
+      currentMod1Index = idx;
+      showNumbersOnPlateMod1 = false;
+      const ch = mod1Challenges[idx];
+
+      document.getElementById('mod1-challenge-tag').textContent = ch.tag;
+      document.getElementById('mod1-dog-badge').textContent = ch.dog === 'Megan' ? '🎀 Plato para Megan' : '🧣 Plato para Rufo';
+      document.getElementById('mod1-instruction').textContent = ch.instruction;
+
+      document.getElementById('mod1-num-input').value = '';
+      document.getElementById('mod1-den-input').value = '';
+      document.getElementById('mod1-feedback').classList.add('hidden');
+
+      renderMod1Plate();
+      renderMod1Pills();
+    }
+
+    function renderMod1Plate() {
+      const ch = mod1Challenges[currentMod1Index];
+      const container = document.getElementById('mod1-plate-container');
+
+      let gridColsClass = 'grid-cols-4';
+      if (ch.layout === 'row-6') gridColsClass = 'grid-cols-3 sm:grid-cols-6';
+      if (ch.layout === 'row-5') gridColsClass = 'grid-cols-5';
+      if (ch.layout === 'grid-2x2') gridColsClass = 'grid-cols-2 max-w-[240px] mx-auto';
+
+      let html = `<div class="grid ${gridColsClass} gap-2.5">`;
+      let foodCounter = 0;
+
+      for (let i = 0; i < ch.total; i++) {
+        const hasFood = ch.interactiveServe ? ch.userSlots[i] : (i < ch.filled);
+        if (hasFood) foodCounter++;
+
+        const clickHandler = ch.interactiveServe ? `onclick="toggleMod1UserSlot(${i})"` : '';
+        const cursorCls = ch.interactiveServe ? 'cursor-pointer hover:scale-105' : '';
+
+        if (hasFood) {
+          html += `
+            <div ${clickHandler} class="mod1-filled-slot relative h-24 sm:h-28 rounded-2xl bg-gradient-to-b from-amber-200 to-amber-300 border-3 border-amber-500 flex flex-col items-center justify-center p-2 shadow-sm transition-all ${cursorCls}">
+              ${showNumbersOnPlateMod1 ? `<span class="absolute -top-2 -left-2 w-7 h-7 rounded-full bg-emerald-600 text-white font-extrabold text-sm flex items-center justify-center shadow animate-bounce">${foodCounter}</span>` : ''}
+              <span class="text-3xl sm:text-4xl select-none">${ch.foodEmoji}</span>
+              <span class="text-[11px] font-extrabold text-amber-950 mt-1 bg-white/80 px-2 py-0.5 rounded-full">Con comida</span>
+              <span class="text-[10px] font-bold text-amber-800 mt-0.5">Espacio ${i + 1} de ${ch.total}</span>
+            </div>
+          `;
+        } else {
+          html += `
+            <div ${clickHandler} class="relative h-24 sm:h-28 rounded-2xl bg-gray-50 border-3 border-dashed border-gray-300 flex flex-col items-center justify-center p-2 transition-all ${cursorCls}">
+              <span class="text-xs font-bold text-gray-400 select-none">Vacío</span>
+              <span class="text-[10px] font-semibold text-gray-400 mt-1">Espacio ${i + 1} de ${ch.total}</span>
+            </div>
+          `;
+        }
+      }
+      html += `</div>`;
+      container.innerHTML = html;
+    }
+
+    function toggleMod1UserSlot(slotIndex) {
+      playSound('click');
+      const ch = mod1Challenges[currentMod1Index];
+      if (!ch.interactiveServe) return;
+      ch.userSlots[slotIndex] = !ch.userSlots[slotIndex];
+      renderMod1Plate();
+    }
+
+    function countFoodHelperMod1() {
+      playSound('click');
+      showNumbersOnPlateMod1 = true;
+      renderMod1Plate();
+
+      const ch = mod1Challenges[currentMod1Index];
+      const currentFilled = ch.interactiveServe ? ch.userSlots.filter(Boolean).length : ch.filled;
+
+      showMod1Feedback(
+        'info',
+        `🔢 ¡Contemos con Megan! Mira los círculos verdes en el plato: hay <strong>${currentFilled} porciones CON comida</strong> (eso va ARRIBA en el numerador) y el plato completo está dividido en <strong>${ch.total} espacios en total</strong> (eso va ABAJO en el denominador).`
+      );
+    }
+
+    function checkMod1Answer() {
+      const ch = mod1Challenges[currentMod1Index];
+      const numRaw = document.getElementById('mod1-num-input').value.trim();
+      const denRaw = document.getElementById('mod1-den-input').value.trim();
+
+      const num = parseInt(numRaw, 10);
+      const den = parseInt(denRaw, 10);
+
+      // Si es un reto de servir interactivamente, primero verificamos cuántas porciones sirvió en el plato
+      if (ch.interactiveServe) {
+        const servedCount = ch.userSlots.filter(Boolean).length;
+        if (servedCount !== ch.filled) {
+          playSound('bark');
+          showMod1Feedback(
+            'warn',
+            `🐾 <strong>¡Guau!</strong> En el plato has servido <strong>${servedCount}</strong> porciones, pero la receta pide servir <strong>${ch.filled}</strong> de los ${ch.total} espacios. ¡Toca los compartimentos del plato para tener ${ch.filled} con comida!`
+          );
+          return;
+        }
+      }
+
+      // 1. Diagnóstico si dejó el denominador en blanco (escribió un solo número entero como en la hoja)
+      if (numRaw !== '' && (denRaw === '' || isNaN(den) || den === 0)) {
+        playSound('bark');
+        showNumbersOnPlateMod1 = true;
+        renderMod1Plate();
+        showMod1Feedback(
+          'error',
+          `🐶 <strong>Rufo dice: "¡Guau! Escribiste un solo número y falta el piso de abajo."</strong><br>En tu hoja pusiste un solo número, pero recuerda que una fracción tiene <strong>dos pisos</strong>: arriba van las porciones con comida (<strong>${ch.filled}</strong>) y abajo debes escribir en cuántos espacios está dividido TODO el plato (<strong>${ch.total}</strong>).`
+        );
+        return;
+      }
+
+      if (isNaN(num) || isNaN(den)) {
+        playSound('bark');
+        showMod1Feedback('warn', '🐾 Completa los dos pisos de la fracción (arriba y abajo) antes de servir.');
+        return;
+      }
+
+      // 2. Diagnóstico específico si puso la cantidad de espacios VACÍOS en el numerador (el error exacto del taller: 1, 4, 1, 4)
+      if (num === ch.emptyCount && num !== ch.filled) {
+        playSound('bark');
+        showNumbersOnPlateMod1 = true;
+        renderMod1Plate();
+        // Hacer parpadear las porciones con comida
+        document.querySelectorAll('.mod1-filled-slot').forEach(el => el.classList.add('animate-pulse-highlight'));
+
+        showMod1Feedback(
+          'error',
+          `🐶 <strong>Rufo ladra cariñosamente: "¡Guau, cuidado Chef! Contaste los ${ch.emptyCount} espacios VACÍOS del plato."</strong><br>En el taller escribiste <strong>${ch.emptyCount}</strong> porque contaste la parte blanca sin comida. ¡Mira cómo parpadean y se numeran las porciones que <strong>SÍ tienen ${ch.foodName}</strong>! Arriba van <strong>${ch.filled}</strong> (con comida) y abajo van <strong>${ch.total}</strong> (todos los espacios del plato).`
+        );
+        return;
+      }
+
+      // 3. Diagnóstico si arriba está bien pero abajo puso solo las partes vacías en vez del total
+      if (num === ch.filled && den === ch.emptyCount) {
+        playSound('bark');
+        showMod1Feedback(
+          'warn',
+          `🎀 <strong>Megan dice: "¡Muy bien el piso de arriba (${ch.filled})! Pero mira el piso de abajo:"</strong><br>Abajo pusiste ${ch.emptyCount} (los espacios vacíos). Recuerda que en el denominador se cuentan <strong>TODOS los espacios del plato</strong> (los ${ch.filled} con comida + los ${ch.emptyCount} vacíos = <strong>${ch.total}</strong>).`
+        );
+        return;
+      }
+
+      // 4. Respuesta Correcta
+      if (num === ch.filled && den === ch.total) {
+        playSound('success');
+        completedTasks.mod1[currentMod1Index] = true;
+        showNumbersOnPlateMod1 = true;
+        renderMod1Plate();
+        renderMod1Pills();
+        updateStarsUI();
+
+        const nextBtnHtml = currentMod1Index < mod1Challenges.length - 1
+          ? `<button onclick="loadMod1Challenge(${currentMod1Index + 1})" class="btn-3d mt-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-5 py-2 rounded-xl text-sm">Siguiente Plato ➡️</button>`
+          : `<button onclick="switchModule(2)" class="btn-3d mt-3 bg-amber-500 hover:bg-amber-600 text-white font-bold px-5 py-2 rounded-xl text-sm">¡Ir al Módulo 2: La Balanza! ⚖️</button>`;
+
+        showMod1Feedback(
+          'success',
+          `🌟 <strong>¡Excelente, Chef! ¡${ch.filled}/${ch.total} es la fracción perfecta!</strong><br>Contaste <strong>${ch.filled}</strong> porciones con ${ch.foodName} arriba y <strong>${ch.total}</strong> espacios totales abajo. ¡${ch.dog} se comió todo feliz!<br>${nextBtnHtml}`
+        );
+      } else {
+        playSound('bark');
+        showNumbersOnPlateMod1 = true;
+        renderMod1Plate();
+        showMod1Feedback(
+          'warn',
+          `🐾 <strong>¡Casi! Revisemos juntos el plato:</strong><br>• Arriba (Numerador): Cuenta cuántos compartimentos tienen ${ch.foodName} (son <strong>${ch.filled}</strong>).<br>• Abajo (Denominador): Cuenta cuántos compartimentos tiene el plato entero (son <strong>${ch.total}</strong>).`
+        );
+      }
+    }
+
+    function showMod1Feedback(type, htmlContent) {
+      const box = document.getElementById('mod1-feedback');
+      box.classList.remove('hidden', 'bg-emerald-50', 'border-emerald-400', 'text-emerald-950', 'bg-rose-50', 'border-rose-400', 'text-rose-950', 'bg-amber-50', 'border-amber-400', 'text-amber-950');
+      if (type === 'success') {
+        box.classList.add('bg-emerald-50', 'border-emerald-400', 'text-emerald-950');
+      } else if (type === 'error') {
+        box.classList.add('bg-rose-50', 'border-rose-400', 'text-rose-950');
+      } else {
+        box.classList.add('bg-amber-50', 'border-amber-400', 'text-amber-950');
+      }
+      box.innerHTML = `<div class="text-sm sm:text-base">${htmlContent}</div>`;
+    }
+
+    /*************************************************************************
+     * 4. MÓDULO 2: LA BALANZA DE PREMIOS (3/100 -> 0,03 vs 3/10 -> 0,3)
+     *************************************************************************/
+    const mod2Challenges = [
+      {
+        id: 0,
+        tag: 'Ejercicio 5.A de tu Taller',
+        num: 3,
+        den: 100,
+        gridType: '100',
+        title: '3 mini-croquetas de 100 para Megan',
+        summary: '0 tiras completas de 10 • 3 mini-croquetas sueltas (3 centésimas)',
+        acceptedDecimals: ['0,03'],
+        unitDigit: '0',
+        tenthDigit: '0',
+        hundredthDigit: '3'
+      },
+      {
+        id: 1,
+        tag: 'Ejercicio 5.B de tu Taller',
+        num: 3,
+        den: 10,
+        gridType: '10',
+        title: '3 tiras grandes de 10 para Rufo',
+        summary: '3 tiras completas de 10 (3 décimas)',
+        acceptedDecimals: ['0,3', '0,30'],
+        unitDigit: '0',
+        tenthDigit: '3',
+        hundredthDigit: ''
+      },
+      {
+        id: 2,
+        tag: 'Ejercicio 5.C de tu Taller',
+        num: 20,
+        den: 100,
+        gridType: '100',
+        title: '20 mini-croquetas de 100 (¡llenan 2 tiras de 10!)',
+        summary: '2 tiras completas de 10 • 0 sueltas (20 centésimas = 2 décimas)',
+        acceptedDecimals: ['0,2', '0,20'],
+        unitDigit: '0',
+        tenthDigit: '2',
+        hundredthDigit: '0'
+      },
+      {
+        id: 3,
+        tag: 'Ejercicio 5.D de tu Taller',
+        num: 83,
+        den: 100,
+        gridType: '100',
+        title: '83 mini-croquetas de 100 para Megan y Rufo',
+        summary: '8 tiras completas de 10 • 3 mini-croquetas sueltas (83 centésimas)',
+        acceptedDecimals: ['0,83'],
+        unitDigit: '0',
+        tenthDigit: '8',
+        hundredthDigit: '3'
+      }
+    ];
+
+    let currentMod2Index = 0;
+
+    function toggleVisualComparator(forceShow) {
+      playSound('click');
+      const drawer = document.getElementById('mod2-comparator-drawer');
+      if (typeof forceShow === 'boolean') {
+        drawer.classList.toggle('hidden', !forceShow);
+      } else {
+        drawer.classList.toggle('hidden');
+      }
+    }
+
+    function renderMod2Pills() {
+      const container = document.getElementById('mod2-step-pills');
+      const labels = ['5.A (3/100)', '5.B (3/10)', '5.C (20/100)', '5.D (83/100)'];
+      container.innerHTML = labels.map((label, idx) => {
+        const isDone = completedTasks.mod2[idx];
+        const isCurrent = idx === currentMod2Index;
+        let cls = 'px-2.5 py-1.5 rounded-xl font-bold text-xs transition-all ';
+        if (isCurrent) {
+          cls += 'bg-sky-600 text-white shadow ring-2 ring-sky-300';
+        } else if (isDone) {
+          cls += 'bg-emerald-100 text-emerald-900 border border-emerald-400';
+        } else {
+          cls += 'bg-amber-100 text-amber-900 hover:bg-amber-200';
+        }
+        return `<button onclick="loadMod2Challenge(${idx})" class="${cls}">${isDone ? '⭐ ' : ''}${label}</button>`;
+      }).join('');
+    }
+
+    function loadMod2Challenge(idx) {
+      currentMod2Index = idx;
+      const ch = mod2Challenges[idx];
+
+      document.getElementById('mod2-challenge-tag').textContent = ch.tag;
+      document.getElementById('mod2-grid-type-badge').textContent =
+        ch.gridType === '100'
+          ? 'Cuadrícula de 100 cuadritos (Centésimas)'
+          : 'Cuadrícula de 10 tiras (Décimas)';
+      document.getElementById('mod2-frac-num').textContent = ch.num;
+      document.getElementById('mod2-frac-den').textContent = ch.den;
+      document.getElementById('mod2-recipe-title').textContent = ch.title;
+      document.getElementById('mod2-visual-summary').textContent = ch.summary;
+
+      document.getElementById('mod2-digit-unit').value = '0';
+      document.getElementById('mod2-digit-tenth').value = '';
+      document.getElementById('mod2-digit-hundredth').value = '';
+      document.getElementById('mod2-feedback').classList.add('hidden');
+
+      renderMod2Grid(ch);
+      renderMod2Pills();
+    }
+
+    function renderMod2Grid(ch) {
+      const wrapper = document.getElementById('mod2-grid-wrapper');
+      if (ch.gridType === '10') {
+        let html = `<div class="grid-10-strips w-full h-full">`;
+        for (let i = 0; i < 10; i++) {
+          const active = i < ch.num;
+          html += `
+            <div class="rounded-lg flex flex-col items-center justify-center transition-all ${
+              active
+                ? 'bg-gradient-to-b from-amber-400 to-orange-500 border-2 border-amber-700 text-white font-extrabold text-xs shadow-sm'
+                : 'bg-gray-100 border border-gray-300 text-gray-400 text-[10px]'
+            }">
+              <span>${active ? '🥩' : ''}</span>
+              <span>${i + 1}</span>
+            </div>
+          `;
+        }
+        html += `</div>`;
+        wrapper.innerHTML = html;
+      } else {
+        let html = `<div class="grid-100 w-full h-full">`;
+        for (let i = 0; i < 100; i++) {
+          const active = i < ch.num;
+          html += `
+            <div class="rounded-[3px] transition-all ${
+              active
+                ? 'bg-gradient-to-br from-pink-500 to-amber-500 border border-amber-800 shadow-inner'
+                : 'bg-gray-100 border border-gray-200'
+            }"></div>
+          `;
+        }
+        html += `</div>`;
+        wrapper.innerHTML = html;
+      }
+    }
+
+    function fillScaleQuick(decimalStr) {
+      playSound('click');
+      const parts = decimalStr.split(',');
+      document.getElementById('mod2-digit-unit').value = parts[0] || '0';
+      const dec = parts[1] || '';
+      document.getElementById('mod2-digit-tenth').value = dec[0] || '';
+      document.getElementById('mod2-digit-hundredth').value = dec[1] || '';
+    }
+
+    function checkMod2Answer() {
+      const ch = mod2Challenges[currentMod2Index];
+      const u = document.getElementById('mod2-digit-unit').value.trim() || '0';
+      const t = document.getElementById('mod2-digit-tenth').value.trim();
+      const h = document.getElementById('mod2-digit-hundredth').value.trim();
+
+      if (t === '') {
+        playSound('bark');
+        showMod2Feedback('warn', '🐾 Escribe los números en la balanza o toca una de las 4 etiquetas rápidas de abajo.');
+        return;
+      }
+
+      const userDecimal = `${u},${t}${h}`;
+
+      // Diagnóstico específico para la confusión entre 3/100 (0,03) y 3/10 (0,3)
+      if (ch.num === 3 && ch.den === 100 && (userDecimal === '0,3' || userDecimal === '0,30')) {
+        playSound('bark');
+        toggleVisualComparator(true);
+        showMod2Feedback(
+          'error',
+          `🐶 <strong>¡Ojo, Chef! Ese fue el cruce de líneas del punto 5 de tu taller:</strong><br>Pusiste <strong>0,3</strong> (que son 3 tiras grandes de 10 = 30 croquetas). Pero la fracción es <strong>3/100</strong>: son solo <strong>3 mini-croquetas sueltas</strong>. Como no hay ninguna tira de 10 llena, la casilla de las <strong>Décimas lleva un 0</strong> y el 3 va en las <strong>Centésimas</strong>: <strong>0,03</strong>.`
+        );
+        return;
+      }
+
+      if (ch.num === 3 && ch.den === 10 && userDecimal === '0,03') {
+        playSound('bark');
+        toggleVisualComparator(true);
+        showMod2Feedback(
+          'error',
+          `🎀 <strong>¡Mira la bandeja de Rufo!</strong><br>Pusiste <strong>0,03</strong> (3 mini-croquetas de 100), pero la fracción es <strong>3/10</strong> (tres décimas = 3 tiras completas de 10). Por eso el <strong>3</strong> va directamente en la casilla de las <strong>Décimas</strong>: <strong>0,3</strong>.`
+        );
+        return;
+      }
+
+      // Comprobación correcta
+      if (ch.acceptedDecimals.includes(userDecimal)) {
+        playSound('success');
+        completedTasks.mod2[currentMod2Index] = true;
+        renderMod2Pills();
+        updateStarsUI();
+
+        const nextBtn = currentMod2Index < mod2Challenges.length - 1
+          ? `<button onclick="loadMod2Challenge(${currentMod2Index + 1})" class="btn-3d mt-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-5 py-2 rounded-xl text-sm">Siguiente Ración ➡️</button>`
+          : `<button onclick="switchModule(3)" class="btn-3d mt-3 bg-amber-500 hover:bg-amber-600 text-white font-bold px-5 py-2 rounded-xl text-sm">¡Ir al Módulo 3: El Recetario! 📖</button>`;
+
+        showMod2Feedback(
+          'success',
+          `🌟 <strong>¡Pesaje exacto! ${ch.num}/${ch.den} es igual a ${userDecimal}.</strong><br>${ch.summary}. ¡Megan y Rufo mueven la colita de felicidad!<br>${nextBtn}`
+        );
+      } else {
+        playSound('bark');
+        showMod2Feedback(
+          'warn',
+          `🐾 <strong>Revisemos la balanza para ${ch.num}/${ch.den}:</strong><br>Mira cuántas tiras de 10 completas hay (van en <strong>Décimas</strong>) y cuántos cuadritos sueltos de 100 quedan (van en <strong>Centésimas</strong>).`
+        );
+      }
+    }
+
+    function showMod2Feedback(type, htmlContent) {
+      const box = document.getElementById('mod2-feedback');
+      box.classList.remove('hidden', 'bg-emerald-50', 'border-emerald-400', 'text-emerald-950', 'bg-rose-50', 'border-rose-400', 'text-rose-950', 'bg-amber-50', 'border-amber-400', 'text-amber-950');
+      if (type === 'success') {
+        box.classList.add('bg-emerald-50', 'border-emerald-400', 'text-emerald-950');
+      } else if (type === 'error') {
+        box.classList.add('bg-rose-50', 'border-rose-400', 'text-rose-950');
+      } else {
+        box.classList.add('bg-amber-50', 'border-amber-400', 'text-amber-950');
+      }
+      box.innerHTML = `<div class="text-sm sm:text-base">${htmlContent}</div>`;
+    }
+
+    /*************************************************************************
+     * 5. MÓDULO 3: EL RECETARIO DE LA CHEF (Punto 4: Lectura y Ortografía)
+     *************************************************************************/
+    const mod3Challenges = [
+      {
+        id: 0,
+        label: '4.A (0,7)',
+        numberStr: '0,7',
+        wholePart: '0',
+        decPart: '7',
+        decCount: 1,
+        wholeTip: 'Antes de la coma hay un 0 (cero enteros). ¡Recuerda que nunca se llama "cero centésimas"!',
+        wordBank: ['siete', 'décimas', 'cero enteros,', 'cero centésimas', 'centésimas'],
+        validSentences: [
+          'siete décimas',
+          'cero enteros, siete décimas'
+        ],
+        orthoPrompt: 'Completa la tilde y la C en la palabra "décimas":',
+        orthoTemplate: [
+          { type: 'text', val: 'siete d' },
+          { type: 'input', answer: 'é', hint: 'é' },
+          { type: 'input', answer: 'c', hint: 'c' },
+          { type: 'text', val: 'imas' }
+        ],
+        orthoTip: '💡 "Décimas" viene de diez. Lleva tilde en la É (por ser palabra esdrújula) y se escribe con C, no con Z.'
+      },
+      {
+        id: 1,
+        label: '4.B (0,25)',
+        numberStr: '0,25',
+        wholePart: '0',
+        decPart: '25',
+        decCount: 2,
+        wholeTip: 'Antes de la coma hay un 0. Y mira el detector después de la coma: ¡hay 2 cifras (2 y 5), así que son CENTÉSIMAS!',
+        wordBank: ['veinticinco', 'centésimas', 'cero enteros,', 'cero centésimo', 'décimas'],
+        validSentences: [
+          'veinticinco centésimas',
+          'cero enteros, veinticinco centésimas'
+        ],
+        orthoPrompt: 'En el taller escribiste "beinticico". ¡Completemos juntos "veinticinco centésimas"!',
+        orthoTemplate: [
+          { type: 'input', answer: 'v', hint: 'v' },
+          { type: 'text', val: 'ei' },
+          { type: 'input', answer: 'n', hint: 'n' },
+          { type: 'text', val: 'ticinco ' },
+          { type: 'input', answer: 'c', hint: 'c' },
+          { type: 'text', val: 'ent' },
+          { type: 'input', answer: 'é', hint: 'é' },
+          { type: 'text', val: 'simas' }
+        ],
+        orthoTip: '💡 "Veinticinco" viene de veinte + cinco: empieza con V y lleva una N antes de la T (veiNticinco).'
+      },
+      {
+        id: 2,
+        label: '4.C (0,9)',
+        numberStr: '0,9',
+        wholePart: '0',
+        decPart: '9',
+        decCount: 1,
+        wholeTip: 'Antes de la coma hay un 0 y después de la coma hay 1 sola cifra (el 9): ¡son DÉCIMAS!',
+        wordBank: ['nueve', 'décimas', 'cero enteros,', 'cero centésima', 'centésimas'],
+        validSentences: [
+          'nueve décimas',
+          'cero enteros, nueve décimas'
+        ],
+        orthoPrompt: 'Completa las letras clave de "nueve décimas":',
+        orthoTemplate: [
+          { type: 'text', val: 'nue' },
+          { type: 'input', answer: 'v', hint: 'v' },
+          { type: 'text', val: 'e d' },
+          { type: 'input', answer: 'é', hint: 'é' },
+          { type: 'input', answer: 'c', hint: 'c' },
+          { type: 'text', val: 'imas' }
+        ],
+        orthoTip: '💡 "Nueve" se escribe con V y "décimas" lleva tilde en la É y se escribe con C.'
+      },
+      {
+        id: 3,
+        label: '4.D (1,3)',
+        numberStr: '1,3',
+        wholePart: '1',
+        decPart: '3',
+        decCount: 1,
+        wholeTip: '¡En este ejercicio del taller lo leíste SÚPER BIEN ("un entero, tres décimas")! Ahora solo pulamos las letras que marcó la profe.',
+        wordBank: ['un entero,', 'tres', 'décimas', 'centésimas', 'cero centésimas'],
+        validSentences: [
+          'un entero, tres décimas'
+        ],
+        orthoPrompt: 'En el taller escribiste "un etero tres dezimas". ¡Pongamos la N de eNtero y la É-C de dÉCimas!',
+        orthoTemplate: [
+          { type: 'text', val: 'un e' },
+          { type: 'input', answer: 'n', hint: 'n' },
+          { type: 'text', val: 'tero, tres d' },
+          { type: 'input', answer: 'é', hint: 'é' },
+          { type: 'input', answer: 'c', hint: 'c' },
+          { type: 'text', val: 'imas' }
+        ],
+        orthoTip: '💡 ¡Tu concepto matemático en el 4.D estuvo excelente! Solo recuerda: eNtero lleva N, y dÉCimas lleva tilde en la É y C.'
+      }
+    ];
+
+    let currentMod3Index = 0;
+    let selectedMod3Words = [];
+
+    function renderMod3Pills() {
+      const container = document.getElementById('mod3-step-pills');
+      container.innerHTML = mod3Challenges.map((ch, idx) => {
+        const isDone = completedTasks.mod3[idx];
+        const isCurrent = idx === currentMod3Index;
+        let cls = 'px-2.5 py-1.5 rounded-xl font-bold text-xs transition-all ';
+        if (isCurrent) {
+          cls += 'bg-pink-600 text-white shadow ring-2 ring-pink-300';
+        } else if (isDone) {
+          cls += 'bg-emerald-100 text-emerald-900 border border-emerald-400';
+        } else {
+          cls += 'bg-amber-100 text-amber-900 hover:bg-amber-200';
+        }
+        return `<button onclick="loadMod3Challenge(${idx})" class="${cls}">${isDone ? '⭐ ' : ''}${ch.label}</button>`;
+      }).join('');
+    }
+
+    function loadMod3Challenge(idx) {
+      currentMod3Index = idx;
+      selectedMod3Words = [];
+      const ch = mod3Challenges[idx];
+
+      document.getElementById('mod3-number-tag').textContent = ch.numberStr;
+      document.getElementById('mod3-whole-display').textContent = ch.wholePart;
+      document.getElementById('mod3-whole-tip').innerHTML = ch.wholeTip;
+
+      // Mostrar dígitos después de la coma separados en cajitas para que cuente si hay 1 o 2
+      const decContainer = document.getElementById('mod3-dec-display');
+      decContainer.innerHTML = ch.decPart.split('').map((digit, i) => `
+        <div class="inline-flex flex-col items-center mx-0.5">
+          <span class="w-10 h-11 rounded-xl bg-purple-600 text-white flex items-center justify-center shadow">${digit}</span>
+          <span class="text-[10px] font-bold text-purple-800 mt-0.5">${i + 1}ª cifra</span>
+        </div>
+      `).join('');
+
+      // Iluminar cartel de DÉCIMAS (1 cifra) o CENTÉSIMAS (2 cifras)
+      const bDec = document.getElementById('mod3-badge-decimas');
+      const bCen = document.getElementById('mod3-badge-centesimas');
+      if (ch.decCount === 1) {
+        bDec.className = 'px-3 py-1 rounded-xl text-xs font-extrabold bg-amber-400 text-amber-950 shadow ring-2 ring-amber-600 scale-105';
+        bCen.className = 'px-2.5 py-1 rounded-xl text-xs font-semibold bg-gray-200 text-gray-500 opacity-60';
+      } else {
+        bCen.className = 'px-3 py-1 rounded-xl text-xs font-extrabold bg-purple-600 text-white shadow ring-2 ring-purple-400 scale-105';
+        bDec.className = 'px-2.5 py-1 rounded-xl text-xs font-semibold bg-gray-200 text-gray-500 opacity-60';
+      }
+
+      renderMod3SentenceAndBank();
+      renderMod3OrthoCard(ch);
+
+      // Bloquear Paso 2 hasta que complete el Paso 1
+      const step2Card = document.getElementById('mod3-step2-card');
+      step2Card.classList.add('opacity-60', 'pointer-events-none');
+      document.getElementById('mod3-feedback').classList.add('hidden');
+      renderMod3Pills();
+    }
+
+    function renderMod3SentenceAndBank() {
+      const ch = mod3Challenges[currentMod3Index];
+      const tray = document.getElementById('mod3-sentence-tray');
+      const bank = document.getElementById('mod3-word-bank');
+
+      if (selectedMod3Words.length === 0) {
+        tray.innerHTML = `<span class="text-xs text-gray-400 italic">Toca las palabras de abajo para armar cómo se lee <strong>${ch.numberStr}</strong>...</span>`;
+      } else {
+        tray.innerHTML = selectedMod3Words.map((word, idx) => `
+          <button onclick="removeMod3Word(${idx})" class="btn-3d bg-amber-500 hover:bg-amber-600 text-white font-bold px-3 py-1.5 rounded-xl text-sm flex items-center gap-1.5">
+            <span>${word}</span>
+            <span class="text-xs bg-amber-700/50 rounded-full px-1.5">✕</span>
+          </button>
+        `).join('');
+      }
+
+      bank.innerHTML = ch.wordBank.map((word) => {
+        const alreadyUsed = selectedMod3Words.includes(word);
+        return `
+          <button onclick="addMod3Word('${word}')" ${alreadyUsed ? 'disabled' : ''}
+            class="btn-3d px-3 py-2 rounded-xl font-bold text-xs sm:text-sm transition-all ${
+              alreadyUsed
+                ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                : 'bg-white hover:bg-amber-100 text-amber-950 border-2 border-amber-300'
+            }">
+            ${word}
+          </button>
+        `;
+      }).join('');
+    }
+
+    function addMod3Word(word) {
+      playSound('click');
+      if (!selectedMod3Words.includes(word)) {
+        selectedMod3Words.push(word);
+        renderMod3SentenceAndBank();
+      }
+    }
+
+    function removeMod3Word(idx) {
+      playSound('click');
+      selectedMod3Words.splice(idx, 1);
+      renderMod3SentenceAndBank();
+    }
+
+    function clearMod3Sentence() {
+      playSound('click');
+      selectedMod3Words = [];
+      renderMod3SentenceAndBank();
+    }
+
+    function checkMod3Step1() {
+      const ch = mod3Challenges[currentMod3Index];
+      const userPhrase = selectedMod3Words.join(' ').trim();
+
+      if (!userPhrase) {
+        playSound('bark');
+        showMod3Feedback('warn', '🐾 Toca las tarjetas de palabras para armar cómo se lee el número.');
+        return;
+      }
+
+      // 1. Diagnóstico específico si incluyó "cero centésimas" / "cero centésimo" / "cero centésima"
+      if (userPhrase.includes('cero centésim')) {
+        playSound('bark');
+        showMod3Feedback(
+          'error',
+          `🎀 <strong>Megan dice: "¡Alto ahí, Chef! En el taller pusiste 'cero centésimas' al principio."</strong><br>Recuerda que el <strong>0</strong> que está ANTES de la coma está en el lugar de las unidades o enteros. ¡Nunca se llama "cero centésimas"! Quita esa tarjeta y empieza directamente con el número decimal (o usa "cero enteros,").`
+        );
+        return;
+      }
+
+      // 2. Diagnóstico específico si en 0,25 puso "décimas" en vez de "centésimas"
+      if (ch.decCount === 2 && userPhrase.includes('décimas')) {
+        playSound('bark');
+        showMod3Feedback(
+          'error',
+          `🐶 <strong>Rufo señala el Detector Morado: "¡Guau! Mira cuántas cifras hay después de la coma en ${ch.numberStr}:"</strong><br>Hay <strong>2 cifras</strong> (el 2 y el 5). Cuando hay 1 sola cifra se llaman décimas, pero cuando hay <strong>2 cifras</strong> se llaman <strong>CENTÉSIMAS</strong>.`
+        );
+        return;
+      }
+
+      // 3. Diagnóstico si en un número de 1 cifra puso "centésimas"
+      if (ch.decCount === 1 && userPhrase.includes('centésimas')) {
+        playSound('bark');
+        showMod3Feedback(
+          'warn',
+          `🐾 Mira el Detector después de la coma en <strong>${ch.numberStr}</strong>: solo hay <strong>1 cifra</strong> (${ch.decPart}). Cuando hay 1 cifra se llaman <strong>DÉCIMAS</strong>.`
+        );
+        return;
+      }
+
+      // 4. Correcto
+      if (ch.validSentences.includes(userPhrase)) {
+        playSound('success');
+        const step2Card = document.getElementById('mod3-step2-card');
+        step2Card.classList.remove('opacity-60', 'pointer-events-none');
+        step2Card.classList.add('ring-4', 'ring-pink-300');
+
+        showMod3Feedback(
+          'success',
+          `🌟 <strong>¡Súper bien leído: "${userPhrase}"!</strong><br>Ahora completa el <strong>Paso 2 (Reto Ortográfico de Megan)</strong> a la derecha para ganar la estrella de esta receta.`
+        );
+      } else {
+        playSound('bark');
+        showMod3Feedback(
+          'warn',
+          `🐾 Casi lo tienes. Revisa el orden de las palabras para leer <strong>${ch.numberStr}</strong>.`
+        );
+      }
+    }
+
+    function renderMod3OrthoCard(ch) {
+      document.getElementById('mod3-ortho-prompt').textContent = ch.orthoPrompt;
+      document.getElementById('mod3-ortho-tip').innerHTML = ch.orthoTip;
+
+      const box = document.getElementById('mod3-ortho-word-box');
+      let html = '';
+      ch.orthoTemplate.forEach((item, idx) => {
+        if (item.type === 'text') {
+          html += `<span class="whitespace-pre-wrap">${item.val}</span>`;
+        } else {
+          html += `
+            <div class="inline-flex flex-col items-center mx-0.5">
+              <input id="ortho-slot-${idx}" data-answer="${item.answer}" type="text" maxlength="1" placeholder="?"
+                class="w-9 h-11 text-center text-xl font-extrabold text-pink-700 bg-pink-50 border-b-4 border-pink-500 rounded-xl focus:outline-none focus:bg-white focus:ring-2 focus:ring-pink-400" />
+              <button onclick="fillOrthoSlot(${idx}, '${item.hint}')" class="mt-1 text-[11px] font-bold bg-amber-100 hover:bg-amber-200 text-amber-900 px-2 py-0.5 rounded-lg border border-amber-300">
+                Poner "${item.hint}"
+              </button>
+            </div>
+          `;
+        }
+      });
+      box.innerHTML = html;
+    }
+
+    function fillOrthoSlot(slotIdx, letter) {
+      playSound('click');
+      const input = document.getElementById(`ortho-slot-${slotIdx}`);
+      if (input) input.value = letter;
+    }
+
+    function checkMod3Step2() {
+      const ch = mod3Challenges[currentMod3Index];
+      let allCorrect = true;
+
+      ch.orthoTemplate.forEach((item, idx) => {
+        if (item.type === 'input') {
+          const input = document.getElementById(`ortho-slot-${idx}`);
+          const val = (input.value || '').trim().toLowerCase();
+          if (val !== item.answer.toLowerCase()) {
+            // Permitir 'e' sin tilde si la escribió con teclado, pero enseñarle la tilde poniéndola automáticamente si puso 'e'?' No, tiene el botón 'Poner "é"' justo debajo.
+            allCorrect = false;
+            input.classList.add('border-rose-500', 'bg-rose-50');
+          } else {
+            input.classList.remove('border-rose-500', 'bg-rose-50');
+            input.classList.add('border-emerald-500', 'bg-emerald-50', 'text-emerald-800');
+          }
+        }
+      });
+
+      if (!allCorrect) {
+        playSound('bark');
+        showMod3Feedback(
+          'warn',
+          `✏️ <strong>Megan dice: "¡Revisa las casillas rosadas!"</strong><br>Puedes escribir la letra con tu teclado o tocar el botoncito de ayuda debajo de cada casilla (recuerda la tilde en la <strong>é</strong> de <strong>décimas/centésimas</strong> y la <strong>n</strong> de <strong>entero/veinticinco</strong>).`
+        );
+        return;
+      }
+
+      playSound('success');
+      completedTasks.mod3[currentMod3Index] = true;
+      renderMod3Pills();
+      updateStarsUI();
+
+      const nextBtn = currentMod3Index < mod3Challenges.length - 1
+        ? `<button onclick="loadMod3Challenge(${currentMod3Index + 1})" class="btn-3d mt-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-5 py-2 rounded-xl text-sm">Siguiente Receta ➡️</button>`
+        : `<button onclick="switchModule(4)" class="btn-3d mt-3 bg-amber-500 hover:bg-amber-600 text-white font-bold px-5 py-2 rounded-xl text-sm">¡Ir al Módulo 4: El Olfato Inspector! 🔍</button>`;
+
+      showMod3Feedback(
+        'success',
+        `🌟 <strong>¡Receta y Ortografía 10 de 10!</strong><br>Ya dominas cómo se lee y se escribe <strong>${ch.numberStr}</strong> sin ningún error.<br>${nextBtn}`
+      );
+    }
+
+    function showMod3Feedback(type, htmlContent) {
+      const box = document.getElementById('mod3-feedback');
+      box.classList.remove('hidden', 'bg-emerald-50', 'border-emerald-400', 'text-emerald-950', 'bg-rose-50', 'border-rose-400', 'text-rose-950', 'bg-amber-50', 'border-amber-400', 'text-amber-950');
+      if (type === 'success') {
+        box.classList.add('bg-emerald-50', 'border-emerald-400', 'text-emerald-950');
+      } else if (type === 'error') {
+        box.classList.add('bg-rose-50', 'border-rose-400', 'text-rose-950');
+      } else {
+        box.classList.add('bg-amber-50', 'border-amber-400', 'text-amber-950');
+      }
+      box.innerHTML = `<div class="text-sm sm:text-base">${htmlContent}</div>`;
+    }
+
+    /*************************************************************************
+     * 6. MÓDULO 4: EL OLFATO INSPECTOR (Emparejar sin dejar ninguna en blanco)
+     *************************************************************************/
+    const mod4Rounds = [
+      {
+        id: 0,
+        title: 'Punto 6 del Taller: Une la fracción con su nombre',
+        leftItems: [
+          { id: 'L0', label: 'A.', num: 1, den: 2, correctRightId: 'R0' },
+          { id: 'L1', label: 'B.', num: 3, den: 4, correctRightId: 'R1' },
+          { id: 'L2', label: 'C.', num: 1, den: 10, correctRightId: 'R2', highlightNote: '1/10 (Un décimo)' },
+          { id: 'L3', label: 'D.', num: 5, den: 100, correctRightId: 'R3' }
+        ],
+        rightItems: [
+          { id: 'R0', text: 'Un medio' },
+          { id: 'R1', text: 'Tres cuartos' },
+          { id: 'R2', text: 'Un décimo' },
+          { id: 'R3', text: 'Cinco centésimas' }
+        ]
+      },
+      {
+        id: 1,
+        title: 'Punto 5 del Taller: Une la fracción con su número decimal',
+        leftItems: [
+          { id: 'L0', label: 'A.', num: 3, den: 100, correctRightId: 'R2' },
+          { id: 'L1', label: 'B.', num: 3, den: 10, correctRightId: 'R1' },
+          { id: 'L2', label: 'C.', num: 20, den: 100, correctRightId: 'R3' },
+          { id: 'L3', label: 'D.', num: 83, den: 100, correctRightId: 'R0' }
+        ],
+        rightItems: [
+          { id: 'R0', text: '0,83' },
+          { id: 'R1', text: '0,3' },
+          { id: 'R2', text: '0,03' },
+          { id: 'R3', text: '0,2' }
+        ]
+      }
+    ];
+
+    let currentMod4Round = 0;
+    let selectedLeftId = null;
+    // Mapa de conexiones del usuario: { L0: 'R0', ... }
+    let mod4Connections = {};
+    const pairColors = ['#F59E0B', '#EC4899', '#0284C7', '#10B981'];
+
+    function loadMod4Round(roundIdx) {
+      currentMod4Round = roundIdx;
+      selectedLeftId = null;
+      mod4Connections = {};
+      document.getElementById('mod4-feedback').classList.add('hidden');
+
+      const btn0 = document.getElementById('mod4-round-btn-0');
+      const btn1 = document.getElementById('mod4-round-btn-1');
+      if (roundIdx === 0) {
+        btn0.className = 'btn-3d px-3.5 py-2 rounded-2xl font-bold text-xs sm:text-sm bg-emerald-600 text-white';
+        btn1.className = 'btn-3d px-3.5 py-2 rounded-2xl font-bold text-xs sm:text-sm bg-amber-100 text-amber-900 border border-amber-300';
+      } else {
+        btn1.className = 'btn-3d px-3.5 py-2 rounded-2xl font-bold text-xs sm:text-sm bg-emerald-600 text-white';
+        btn0.className = 'btn-3d px-3.5 py-2 rounded-2xl font-bold text-xs sm:text-sm bg-amber-100 text-amber-900 border border-amber-300';
+      }
+
+      renderMod4Board();
+    }
+
+    function renderMod4Board(sniffMissingIds = []) {
+      const round = mod4Rounds[currentMod4Round];
+      const leftCol = document.getElementById('mod4-left-col');
+      const rightCol = document.getElementById('mod4-right-col');
+
+      leftCol.innerHTML = round.leftItems.map((item, idx) => {
+        const isSelected = selectedLeftId === item.id;
+        const isConnected = Boolean(mod4Connections[item.id]);
+        const isSniffed = sniffMissingIds.includes(item.id);
+        const color = pairColors[idx % pairColors.length];
+
+        let borderStyle = 'border-2 border-amber-300 bg-white';
+        if (isSelected) borderStyle = 'border-4 border-amber-500 bg-amber-50 scale-105';
+        if (isConnected) borderStyle = 'border-3 bg-white';
+        if (isSniffed) borderStyle = 'border-4 border-rose-500 bg-rose-50 animate-sniff';
+
+        return `
+          <div id="mod4-card-${item.id}" onclick="selectMod4Left('${item.id}')"
+            style="${isConnected ? `border-color: ${color};` : ''}"
+            class="cursor-pointer rounded-2xl p-3 shadow-sm flex items-center justify-between transition-all ${borderStyle}">
+            <div class="flex items-center gap-3">
+              <span class="font-bold text-sm text-gray-500">${item.label}</span>
+              <div class="text-center font-display font-extrabold text-lg sm:text-xl leading-tight text-amber-950">
+                <div>${item.num}</div>
+                <div class="border-t-2 border-amber-900 px-2.5"></div>
+                <div>${item.den}</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-1.5">
+              ${isSniffed ? '<span class="text-xs font-extrabold text-rose-600 bg-rose-100 px-2 py-0.5 rounded-full">🐾 ¡Falta unir!</span>' : ''}
+              <span class="w-5 h-5 rounded-full border-2 border-amber-400 flex items-center justify-center"
+                style="${isConnected ? `background-color: ${color}; border-color: ${color};` : ''}">
+                ${isConnected ? '<span class="w-2 h-2 rounded-full bg-white"></span>' : ''}
+              </span>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      rightCol.innerHTML = round.rightItems.map((item) => {
+        // Buscar si alguna fracción de la izquierda está conectada a este item
+        const connectedLeftId = Object.keys(mod4Connections).find(k => mod4Connections[k] === item.id);
+        const leftIdx = connectedLeftId ? round.leftItems.findIndex(l => l.id === connectedLeftId) : -1;
+        const color = leftIdx >= 0 ? pairColors[leftIdx % pairColors.length] : '';
+
+        return `
+          <div id="mod4-card-${item.id}" onclick="selectMod4Right('${item.id}')"
+            style="${connectedLeftId ? `border-color: ${color};` : ''}"
+            class="cursor-pointer rounded-2xl p-4 shadow-sm bg-white border-2 border-amber-300 hover:bg-amber-50 flex items-center justify-between transition-all">
+            <span class="w-5 h-5 rounded-full border-2 border-amber-400 flex items-center justify-center"
+              style="${connectedLeftId ? `background-color: ${color}; border-color: ${color};` : ''}">
+              ${connectedLeftId ? '<span class="w-2 h-2 rounded-full bg-white"></span>' : ''}
+            </span>
+            <span class="font-display font-bold text-base sm:text-lg text-amber-950">${item.text}</span>
+          </div>
+        `;
+      }).join('');
+
+      setTimeout(drawMod4Lines, 30);
+    }
+
+    function selectMod4Left(leftId) {
+      playSound('click');
+      selectedLeftId = leftId;
+      document.getElementById('mod4-status-text').innerHTML = '👉 Ahora toca su pareja en la columna de la derecha.';
+      renderMod4Board();
+    }
+
+    function selectMod4Right(rightId) {
+      playSound('click');
+      if (!selectedLeftId) {
+        // Si tocó primero la derecha y ya estaba conectada, permite desconectarla
+        const existingLeft = Object.keys(mod4Connections).find(k => mod4Connections[k] === rightId);
+        if (existingLeft) {
+          delete mod4Connections[existingLeft];
+          renderMod4Board();
+        } else {
+          document.getElementById('mod4-status-text').innerHTML = '👆 Primero elige una fracción de la columna izquierda.';
+        }
+        return;
+      }
+
+      // Si otro item de la izquierda ya usaba este destino, liberarlo
+      Object.keys(mod4Connections).forEach(k => {
+        if (mod4Connections[k] === rightId) {
+          delete mod4Connections[k];
+        }
+      });
+
+      mod4Connections[selectedLeftId] = rightId;
+      selectedLeftId = null;
+      document.getElementById('mod4-status-text').innerHTML = '✅ ¡Línea trazada! Sigue uniendo las demás raciones.';
+      renderMod4Board();
+    }
+
+    function resetMod4Connections() {
+      playSound('click');
+      selectedLeftId = null;
+      mod4Connections = {};
+      document.getElementById('mod4-feedback').classList.add('hidden');
+      renderMod4Board();
+    }
+
+    function drawMod4Lines() {
+      const svg = document.getElementById('mod4-svg-lines');
+      const board = document.getElementById('mod4-board');
+      if (!svg || !board) return;
+
+      const boardRect = board.getBoundingClientRect();
+      const round = mod4Rounds[currentMod4Round];
+      let linesHtml = '';
+
+      Object.keys(mod4Connections).forEach((leftId) => {
+        const rightId = mod4Connections[leftId];
+        const leftEl = document.getElementById(`mod4-card-${leftId}`);
+        const rightEl = document.getElementById(`mod4-card-${rightId}`);
+        if (!leftEl || !rightEl) return;
+
+        const lRect = leftEl.getBoundingClientRect();
+        const rRect = rightEl.getBoundingClientRect();
+
+        const x1 = lRect.right - boardRect.left - 12;
+        const y1 = lRect.top + lRect.height / 2 - boardRect.top;
+        const x2 = rRect.left - boardRect.left + 12;
+        const y2 = rRect.top + rRect.height / 2 - boardRect.top;
+
+        const leftIdx = round.leftItems.findIndex(l => l.id === leftId);
+        const color = pairColors[leftIdx % pairColors.length];
+
+        linesHtml += `
+          <line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"
+            stroke="${color}" stroke-width="5" stroke-linecap="round" />
+        `;
+      });
+
+      svg.innerHTML = linesHtml;
+    }
+
+    window.addEventListener('resize', drawMod4Lines);
+
+    function inspectAndCheckMod4() {
+      const round = mod4Rounds[currentMod4Round];
+      const missingLeftItems = round.leftItems.filter(item => !mod4Connections[item.id]);
+
+      // EL OLFATO INSPECTOR DE MEGAN: Si dejó alguna sin unir (como 1/10 en su examen), NO califica con X roja sino que avisa
+      if (missingLeftItems.length > 0) {
+        playSound('bark');
+        const missingIds = missingLeftItems.map(m => m.id);
+        renderMod4Board(missingIds);
+
+        const missingNames = missingLeftItems.map(m => `<strong>${m.num}/${m.den}</strong>`).join(', ');
+        showMod4Feedback(
+          'warn',
+          `🐾🔍 <strong>¡Sniff, sniff! El Olfato Inspector de Megan se activó:</strong><br>"¡Espera, Chef! Antes de entregar el pedido detecté que falta unir ${missingLeftItems.length === 1 ? 'la fracción' : 'las fracciones'} ${missingNames}. En tu taller la opción <strong>C (1/10)</strong> se quedó solita sin línea por pasar rápido. ¡Conéctala ahora para ganar todas tus estrellas!"`
+        );
+        return;
+      }
+
+      // Ahora que todas están respondidas, verificamos si las parejas son correctas
+      let wrongItems = [];
+      round.leftItems.forEach(item => {
+        if (mod4Connections[item.id] !== item.correctRightId) {
+          wrongItems.push(item);
+        }
+      });
+
+      if (wrongItems.length === 0) {
+        playSound('fanfare');
+        if (currentMod4Round === 0) {
+          completedTasks.mod4[0] = true;
+          completedTasks.mod4[1] = true;
+        } else {
+          completedTasks.mod4[2] = true;
+          completedTasks.mod4[3] = true;
+        }
+        updateStarsUI();
+
+        const nextActionBtn = currentMod4Round === 0
+          ? `<button onclick="loadMod4Round(1)" class="btn-3d mt-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-5 py-2 rounded-xl text-sm">Ir a la Ronda 2: Fracciones y Decimales ➡️</button>`
+          : `<button onclick="openDiplomaModal()" class="btn-3d mt-3 bg-gradient-to-r from-pink-500 to-rose-500 text-white font-bold px-6 py-2.5 rounded-xl text-sm">🏅 ¡Ver mi Diploma de Chef Canina!</button>`;
+
+        showMod4Feedback(
+          'success',
+          `🌟 <strong>¡Pedido Completo y 100% Correcto!</strong><br>No dejaste ninguna fracción sin unir y todas las parejas están perfectas. ¡Megan y Rufo están súper orgullosos de ti!<br>${nextActionBtn}`
+        );
+      } else {
+        playSound('bark');
+        // Si es la Ronda 2 y cruzó 3/100 con 0,3 y 3/10 con 0,03
+        const swappedTenths = currentMod4Round === 1 &&
+          mod4Connections['L0'] === 'R1' && mod4Connections['L1'] === 'R2';
+
+        if (swappedTenths) {
+          showMod4Feedback(
+            'error',
+            `🐶 <strong>¡Cuidado con las opciones A (3/100) y B (3/10)!</strong><br>Recuerda lo que vimos en la Balanza: <strong>3/100</strong> (tres centésimas) lleva un cero después de la coma (<strong>0,03</strong>), mientras que <strong>3/10</strong> (tres décimas) es <strong>0,3</strong>. ¡Cambia esas dos líneas y vuelve a revisar!`
+          );
+        } else {
+          const listStr = wrongItems.map(w => `<strong>${w.num}/${w.den}</strong>`).join(', ');
+          showMod4Feedback(
+            'warn',
+            `🐾 Todas tienen línea (¡muy bien por no dejar ninguna en blanco!), pero revisa la pareja de: ${listStr}.`
+          );
+        }
+      }
+    }
+
+    function showMod4Feedback(type, htmlContent) {
+      const box = document.getElementById('mod4-feedback');
+      box.classList.remove('hidden', 'bg-emerald-50', 'border-emerald-400', 'text-emerald-950', 'bg-rose-50', 'border-rose-400', 'text-rose-950', 'bg-amber-50', 'border-amber-400', 'text-amber-950');
+      if (type === 'success') {
+        box.classList.add('bg-emerald-50', 'border-emerald-400', 'text-emerald-950');
+      } else if (type === 'error') {
+        box.classList.add('bg-rose-50', 'border-rose-400', 'text-rose-950');
+      } else {
+        box.classList.add('bg-amber-50', 'border-amber-400', 'text-amber-950');
+      }
+      box.innerHTML = `<div class="text-sm sm:text-base">${htmlContent}</div>`;
+    }
+
+    /*************************************************************************
+     * 7. MÓDULO 5: COCINA LIBRE (Sandbox)
+     *************************************************************************/
+    let sandboxState = {
+      dog: 'Megan',
+      den: 4,
+      food: '🍗 Pollo',
+      slots: [true, true, true, false]
+    };
+
+    function setSandboxDog(dogName) {
+      playSound('click');
+      sandboxState.dog = dogName;
+      document.getElementById('sb-dog-Megan').className = dogName === 'Megan'
+        ? 'btn-3d py-2 rounded-xl font-bold text-xs sm:text-sm bg-pink-500 text-white'
+        : 'btn-3d py-2 rounded-xl font-bold text-xs sm:text-sm bg-white text-amber-900 border border-amber-300';
+      document.getElementById('sb-dog-Rufo').className = dogName === 'Rufo'
+        ? 'btn-3d py-2 rounded-xl font-bold text-xs sm:text-sm bg-sky-600 text-white'
+        : 'btn-3d py-2 rounded-xl font-bold text-xs sm:text-sm bg-white text-amber-900 border border-amber-300';
+      renderSandbox();
+    }
+
+    function setSandboxDenominator(newDen) {
+      playSound('click');
+      sandboxState.den = newDen;
+      sandboxState.slots = Array.from({ length: newDen }, (_, i) => i < Math.ceil(newDen / 2));
+      renderSandbox();
+    }
+
+    function setSandboxFood(foodStr) {
+      playSound('click');
+      sandboxState.food = foodStr;
+      renderSandbox();
+    }
+
+    function toggleSandboxSlot(idx) {
+      playSound('click');
+      sandboxState.slots[idx] = !sandboxState.slots[idx];
+      renderSandbox();
+    }
+
+    function fillAllSandbox(fill) {
+      playSound('click');
+      sandboxState.slots = sandboxState.slots.map(() => fill);
+      renderSandbox();
+    }
+
+    function renderSandbox() {
+      const plate = document.getElementById('sandbox-plate');
+      const emoji = sandboxState.food.split(' ')[0];
+      const num = sandboxState.slots.filter(Boolean).length;
+      const den = sandboxState.den;
+      const empty = den - num;
+
+      plate.innerHTML = sandboxState.slots.map((filled, idx) => `
+        <button onclick="toggleSandboxSlot(${idx})"
+          class="h-20 rounded-2xl flex flex-col items-center justify-center p-2 transition-all ${
+            filled
+              ? 'bg-gradient-to-b from-amber-200 to-amber-300 border-3 border-amber-500 shadow-sm'
+              : 'bg-gray-50 border-2 border-dashed border-gray-300 text-gray-400'
+          }">
+          <span class="text-2xl">${filled ? emoji : '➕'}</span>
+          <span class="text-[11px] font-bold mt-1">${filled ? 'Servido' : 'Vacío'}</span>
+        </button>
+      `).join('');
+
+      document.getElementById('sb-num').textContent = num;
+      document.getElementById('sb-den').textContent = den;
+
+      const decVal = (num / den);
+      const decFormatted = Number.isInteger(decVal)
+        ? decVal.toString()
+        : decVal.toFixed(2).replace(/0+$/, '').replace('.', ',');
+      document.getElementById('sb-decimal').textContent = decFormatted;
+
+      document.getElementById('sb-filled-text').textContent = `${num} porciones de ${sandboxState.food}`;
+      document.getElementById('sb-empty-text').textContent = `${empty} espacios sin comida`;
+      document.getElementById('sb-total-text').textContent = `${den} espacios en total`;
+
+      const typeEl = document.getElementById('sb-type-text');
+      if (num === 0) {
+        typeEl.textContent = 'Plato vacío (0)';
+      } else if (num < den) {
+        typeEl.textContent = 'Fracción Propia (P) — menor que 1 plato entero';
+      } else {
+        typeEl.textContent = 'Plato Completo (1 entero)';
+      }
+
+      const denNames = {
+        2: 'medios',
+        4: 'cuartos',
+        5: 'quintos',
+        6: 'sextos',
+        8: 'octavos',
+        10: 'décimas'
+      };
+      document.getElementById('sb-reading-text').textContent =
+        num === 0 ? 'Cero porciones' : `${num} ${denNames[den] || ''} para ${sandboxState.dog}`;
+    }
+
+    /*************************************************************************
+     * 8. MODAL DEL DIPLOMA "¡TÚ PUEDES!"
+     *************************************************************************/
+    function openDiplomaModal() {
+      playSound('fanfare');
+      updateStarsUI();
+      document.getElementById('diplomaModal').classList.remove('hidden');
+    }
+
+    function closeDiplomaModal() {
+      playSound('click');
+      document.getElementById('diplomaModal').classList.add('hidden');
+    }
+
+    /*************************************************************************
+     * 9. INICIALIZACIÓN AL CARGAR LA PÁGINA
+     *************************************************************************/
+    window.onload = function () {
+      loadMod1Challenge(0);
+      loadMod2Challenge(0);
+      loadMod3Challenge(0);
+      loadMod4Round(0);
+      renderSandbox();
+      switchModule(1);
+      updateStarsUI();
+    };
+  </script>
+</body>
+</html>
